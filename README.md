@@ -6,7 +6,7 @@
 
 ## 🌐 Live Demo
 
-[Visit Pinspire Website :- https://rashij-17.github.io/Pinspire/
+[Visit Pinspire Website :-(https://rashij-17.github.io/Pinspire-Final/)
 
 
 ---
