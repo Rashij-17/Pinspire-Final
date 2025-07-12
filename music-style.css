@@ -1,0 +1,464 @@
+/* --- Global Variables (Copied from main Pinspire style.css for consistency) --- */
+:root {
+    --color-primary-light: #fcf9f6; /* Very light, warm off-white/beige */
+    --color-primary-dark: #3a3a3a; /* Dark charcoal for text */
+    --color-secondary-light: #fffaf5; /* Slightly warmer off-white for sections */
+    --color-accent: #b26e63; /* Muted Terracotta/Rose - Our main accent */
+    --color-accent-hover: #c58c82; /* Lighter shade of accent for hover */
+    --color-text-muted: #666; /* Softer text color */
+
+    --font-heading: 'Poppins', sans-serif;
+    --font-body: 'Poppins', sans-serif; /* Changed to Poppins for consistency */
+    --font-logo: 'Dancing Script', cursive; /* Aesthetic font for the logo */
+    --font-alt-title: 'Lora', serif; /* For page titles, a more elegant serif */
+
+    --box-shadow-light: 0 4px 10px rgba(0, 0, 0, 0.05);
+    --box-shadow-medium: 0 8px 20px rgba(0, 0, 0, 0.1);
+
+    --primary-nav-height: 70px; /* Approximate height of primary navbar */
+    --secondary-nav-height: 48px; /* Approximate height of secondary navbar */
+    --total-nav-height: calc(var(--primary-nav-height) + var(--secondary-nav-height));
+}
+
+/* --- Base Styles --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* --- Primary Navbar (Copied/Adapted from main site's style.css) --- */
+.navbar-primary {
+    background: white;
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--box-shadow-light);
+    height: var(--primary-nav-height);
+    display: flex;
+    align-items: center;
+}
+
+.navbar-primary .container {
+    display: flex;
+    justify-content: space-between; /* Pushes logo left, nav right */
+    align-items: center;
+    padding: 0 40px;
+    width: 100%;
+}
+
+.navbar-primary .logo {
+    font-family: var(--font-logo);
+    font-size: 2.5em; /* Consistent with main site */
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    line-height: 1;
+}
+
+.navbar-primary nav ul {
+    list-style: none;
+    display: flex;
+}
+
+.navbar-primary nav ul li {
+    margin-left: 30px;
+}
+
+.navbar-primary nav ul li a {
+    text-decoration: none;
+    color: var(--color-primary-dark);
+    font-weight: 600;
+    padding: 5px 0;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.navbar-primary nav ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-accent);
+    bottom: -5px;
+    left: 0;
+    transition: width 0.3s ease;
+}
+
+.navbar-primary nav ul li a:hover,
+.navbar-primary nav ul li a.active {
+    color: var(--color-accent);
+}
+
+.navbar-primary nav ul li a:hover::after,
+.navbar-primary nav ul li a.active::after {
+    width: 100%;
+}
+
+/* --- Secondary Navbar (Music Sub-categories) --- */
+.navbar-secondary {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 12px 0;
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    height: var(--secondary-nav-height);
+    display: flex;
+    align-items: center;
+    position: sticky; /* Keep it sticky */
+    top: var(--primary-nav-height); /* Stick right below primary nav */
+    z-index: 990; /* Slightly lower z-index than primary nav */
+}
+
+.navbar-secondary ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.navbar-secondary ul li {
+    margin: 0 18px; /* Slightly reduced margin for more items */
+}
+
+.navbar-secondary ul li a {
+    text-decoration: none;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    padding: 8px 0;
+    position: relative;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.navbar-secondary ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-accent);
+    bottom: -4px;
+    left: 0;
+    transition: width 0.3s ease;
+}
+
+.navbar-secondary ul li a:hover {
+    color: var(--color-accent);
+    transform: translateY(-1px);
+}
+
+.navbar-secondary ul li a:hover::after,
+.navbar-secondary ul li a.active::after { /* Active state for sub-nav */
+    width: 100%;
+}
+
+.navbar-secondary ul li a.active { /* Active state for sub-nav */
+    color: var(--color-accent);
+}
+
+/* ---------- PAGE TITLE ---------- */
+.page-title {
+    text-align: center;
+    margin: 3.5rem 0 2.5rem; /* More vertical spacing */
+    font-size: 3.2rem; /* Larger and more impactful */
+    color: var(--color-primary-dark); /* Consistent dark text color */
+    font-family: var(--font-alt-title); /* Use Lora or similar for elegance */
+    font-weight: 700; /* Bold */
+    position: relative;
+    display: inline-block; /* For underline */
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.page-title::after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 5px;
+    background-color: var(--color-accent);
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 3px;
+}
+
+/* ---------- GALLERY ---------- */
+.gallery {
+    column-count: 4;
+    column-gap: 2rem; /* Increased gap for better spacing */
+    max-width: 1200px;
+    margin: 0 auto 5rem; /* More bottom margin */
+    padding: 0 20px; /* Consistent padding */
+}
+
+@media(max-width:1024px) {
+    .gallery {
+        column-count: 3;
+        column-gap: 1.5rem;
+    }
+}
+
+@media(max-width:768px) {
+    .gallery {
+        column-count: 2;
+        column-gap: 1.2rem;
+    }
+}
+
+@media(max-width:480px) {
+    .gallery {
+        column-count: 1;
+        column-gap: 1rem;
+        padding: 0 15px; /* Adjust padding for single column */
+    }
+}
+
+.gallery img {
+    width: 100%;
+    margin-bottom: 2rem; /* Increased vertical spacing between images */
+    border-radius: 12px; /* Slightly larger border-radius for softer look */
+    box-shadow: var(--box-shadow-light); /* Consistent shadow */
+    transition: transform .3s ease-in-out, box-shadow .3s ease-in-out; /* Smooth transition */
+    cursor: pointer;
+    break-inside: avoid-column; /* Prevent images from breaking across columns */
+}
+
+.gallery img:hover {
+    transform: translateY(-5px) scale(1.02); /* Lift and subtle scale on hover */
+    box-shadow: var(--box-shadow-medium); /* More pronounced shadow on hover */
+}
+
+/* ---------- POPUP ---------- */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, .85); /* Slightly darker overlay */
+    display: flex; /* Use flexbox to center content */
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    overflow: auto; /* Allow scrolling if content overflows */
+    padding: 20px; /* Padding for small screens */
+    opacity: 0; /* Start hidden */
+    visibility: hidden; /* Start hidden */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.popup[style*="display: flex"] { /* Show with fade-in effect */
+    opacity: 1;
+    visibility: visible;
+}
+
+.popup-content {
+    background: #fff;
+    margin: 2rem auto;
+    border-radius: 16px;
+    max-width: 900px; /* Increased max-width for content */
+    padding: 1.5rem; /* Increased padding */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Stronger shadow for popup */
+    transform: translateY(20px); /* Start slightly off-screen */
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.popup[style*="display: flex"] .popup-content {
+    transform: translateY(0); /* Slide into view */
+    opacity: 1;
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.popup-title {
+    font-family: var(--font-alt-title);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+}
+
+.close-btn {
+    font-size: 1.8rem; /* Larger close button */
+    cursor: pointer;
+    color: var(--color-text-muted);
+    transition: color 0.3s ease;
+}
+.close-btn:hover {
+    color: var(--color-accent);
+}
+
+.popup-main-img {
+    width: 100%;
+    border-radius: 10px;
+    object-fit: contain;
+    margin: 1.5rem 0; /* More spacing */
+    max-height: 70vh; /* Max height relative to viewport for responsiveness */
+    display: block; /* Remove extra space below image */
+}
+
+.lyric-box {
+    font-family: var(--font-alt-title); /* Use Lora for lyrics */
+    font-style: italic;
+    background: var(--color-secondary-light); /* Lighter, more elegant background */
+    border-left: 5px solid var(--color-accent); /* Thicker accent border */
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    color: var(--color-primary-dark);
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+.related-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--color-primary-dark);
+    margin: 1rem 0 0.8rem;
+}
+
+.related {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Adjusted minmax for more images per row */
+    gap: 12px; /* Slightly increased gap */
+}
+
+.related img {
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform .3s ease, box-shadow .3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Subtle shadow for related images */
+}
+
+.related img:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* --- Footer (Copied from main Pinspire style.css) --- */
+footer {
+    background-color: var(--color-primary-dark);
+    color: #fff;
+    text-align: center;
+    padding: 30px 0;
+    font-size: 0.9em;
+    margin-top: auto; /* Pushes footer to the bottom */
+}
+
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    /* Adjust primary nav on smaller screens */
+    .navbar-primary .container {
+        flex-direction: column;
+        padding: 0 20px;
+    }
+    .navbar-primary nav ul {
+        margin-top: 15px;
+    }
+    .navbar-primary nav ul li {
+        margin: 0 15px;
+    }
+    :root {
+        --primary-nav-height: 90px; /* Adjusted for wrapped nav */
+    }
+
+    /* Adjust secondary nav on smaller screens */
+    .navbar-secondary ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .navbar-secondary ul li {
+        margin: 5px 10px;
+    }
+    :root {
+        --secondary-nav-height: 70px; /* Adjusted for wrapped nav */
+    }
+
+    .page-title {
+        font-size: 2.5rem;
+        margin-top: 2.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .gallery {
+        column-gap: 1rem;
+        padding: 0 15px;
+    }
+
+    .gallery img {
+        margin-bottom: 1rem;
+    }
+
+    .popup-content {
+        margin: 1rem;
+        padding: 1rem;
+    }
+
+    .popup-main-img {
+        max-height: 60vh;
+        margin: 1rem 0;
+    }
+
+    .related {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-primary .logo {
+        font-size: 2em;
+    }
+    .navbar-primary nav ul li {
+        margin: 0 10px;
+    }
+    .page-title {
+        font-size: 2rem;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    .gallery {
+        padding: 0 10px;
+        column-count: 1; /* Force single column on very small screens */
+    }
+    .popup-title {
+        font-size: 1.5rem;
+    }
+    .close-btn {
+        font-size: 1.5rem;
+    }
+    .lyric-box {
+        font-size: 1em;
+        padding: 0.8rem 1rem;
+    }
+    .related-title {
+        font-size: 1.1rem;
+    }
+    .related {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    }
+}

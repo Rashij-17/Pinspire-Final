@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music Vibes | Pinspire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="stylesheet" href="music-style.css">
+</head>
+<body>
+
+    <header class="navbar-primary">
+        <div class="container">
+            <div class="logo">Pinspire</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="explore.html">Explore</a></li>
+                    <li><a href="trending.html">Trending</a></li>
+                    <li><a href="profile.html">Profile</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="navbar-secondary music-subnav">
+        <div class="container">
+            <ul>
+                <li><a href="travel.html">Travel</a></li>
+                <li><a href="design.html">Design</a></li>
+                <li><a href="interior.html">Interior</a></li>
+                <li><a href="art.html">Art</a></li>
+                <li><a href="nature.html">Nature</a></li>
+                <li><a href="food.html">Food</a></li>
+                <li><a href="music.html" class="active">Music</a></li>
+                </ul>
+        </div>
+    </nav>
+
+
+    <h1 class="page-title">Feel the Rhythm of Life</h1>
+    <main class="gallery container"></main> <div class="popup" id="popup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <span class="popup-title">Now Playing</span>
+                <span class="close-btn" id="closePopup"><i class="fas fa-times"></i></span> </div>
+
+            <img id="popup-img" class="popup-main-img" src="" alt="Selected Image">
+
+            <div id="lyric" class="lyric-box"></div>
+
+            <div class="related-title">More like this</div>
+            <div class="related" id="related-images"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Pinspire. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        /*  ------------  CONFIG  ------------ */
+        const accessKey = "OWpI9_o2yssBBmD2ni_2c5jed63jeljd6DBT1w79r18"; // Keep this secure in production!
+        const lyricSnippets = [
+            "🎵 “And in the end the love you take is equal to the love you make.” – The Beatles",
+            "🎵 “We found love in a hopeless place.” – Rihanna",
+            "🎵 “It's a beautiful day, don't let it get away.” – U2",
+            "🎵 “Lose yourself in the music, the moment, you own it.” – Eminem",
+            "🎵 “Cause I’m on top of the world, ‘ey.” – Imagine Dragons",
+            "🎵 “Lights will guide you home.” – Coldplay",
+            "🎵 “Sing us a song, you're the piano man.” – Billy Joel",
+            "🎵 “I got a feeling that tonight's gonna be a good night.” – Black Eyed Peas"
+        ];
+
+        /*  ------------  DOM ELEMENTS  ------------ */
+        const gallery     = document.querySelector(".gallery");
+        const popup       = document.getElementById("popup");
+        const popupImg    = document.getElementById("popup-img");
+        const lyricDiv    = document.getElementById("lyric");
+        const relatedDiv  = document.getElementById("related-images");
+        const closePopup  = document.getElementById("closePopup");
+
+        /*  ------------  STATE  ------------ */
+        let page = 1;
+        const perPage = 20; // Number of images to load per batch
+        let loading = false;
+        let relatedPage = 1;
+        let currentSearchTerm = "music"; // Default search term
+
+        /*  ------------  FETCH PHOTOS  ------------ */
+        async function loadImages() {
+            if (loading) return;
+            loading = true;
+            try {
+                // Request 'regular' quality for better display in the main gallery
+                const url = `https://api.unsplash.com/search/photos?page=${page}&per_page=${perPage}&query=music,concert,instruments,song,headphones,dj&client_id=${accessKey}`;
+                const data = await fetch(url).then(r => r.json());
+
+                data.results.forEach(photo => {
+                    const img = document.createElement("img");
+                    img.src = photo.urls.small; // Use 'small' for gallery for faster load times
+                    img.alt = photo.alt_description || "Music photo";
+                    img.loading = "lazy"; // Native lazy loading
+                    img.onclick = () => openPopup(photo);
+                    gallery.appendChild(img);
+                });
+                page++;
+            } catch (err) {
+                console.error("Failed to load images from Unsplash:", err);
+            } finally {
+                loading = false;
+            }
+        }
+
+        /*  ------------  POPUP HANDLERS  ------------ */
+        function openPopup(photo) {
+            popup.style.display = "flex"; // Use flex to center popup content
+            popup.scrollTop = 0; // Scroll to top when opening
+            popupImg.src = photo.urls.regular; // Request 'regular' quality for main popup image
+
+            // Display a random lyric
+            lyricDiv.textContent = lyricSnippets[Math.floor(Math.random() * lyricSnippets.length)];
+
+            // Set current search term for related images
+            currentSearchTerm = photo.alt_description ? photo.alt_description.split(' ')[0] : photo.tags?.[0]?.title || "music";
+            relatedPage = 1; // Reset related images page
+            loadRelatedImages(true); // Load related images, clearing previous ones
+        }
+
+        closePopup.onclick = () => popup.style.display = "none";
+        popup.addEventListener('click', (e) => { // Close popup when clicking outside content
+            if (e.target === popup) {
+                popup.style.display = 'none';
+            }
+        });
+
+
+        /*  ------------  RELATED IMAGES  ------------ */
+        async function loadRelatedImages(clear = false) {
+            const url = `https://api.unsplash.com/search/photos?query=${currentSearchTerm}&page=${relatedPage}&per_page=12&client_id=${accessKey}`;
+            try {
+                const data = await fetch(url).then(r => r.json());
+                if (clear) relatedDiv.innerHTML = ""; // Clear previous related images
+                data.results.forEach(p => {
+                    const rImg = document.createElement("img");
+                    rImg.src = p.urls.thumb; // Use 'thumb' for related for quick loading
+                    rImg.alt = p.alt_description || "Related music photo";
+                    rImg.onclick = () => openPopup(p); // Open new popup on click
+                    relatedDiv.appendChild(rImg);
+                });
+                relatedPage++;
+            } catch (e) {
+                console.error("Failed to load related images:", e);
+            }
+        }
+
+        /*  ------------  INFINITE SCROLL  ------------ */
+        // For main gallery
+        window.addEventListener("scroll", () => {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000 && !loading) {
+                loadImages();
+            }
+        });
+
+        // For related images in popup
+        popup.addEventListener("scroll", () => {
+            const content = popup.querySelector('.popup-content');
+            if (popup.scrollTop + popup.clientHeight >= content.scrollHeight - 200) {
+                loadRelatedImages();
+            }
+        });
+
+        /*  ------------  INIT  ------------ */
+        loadImages();
+    </script>
+</body>
+</html>

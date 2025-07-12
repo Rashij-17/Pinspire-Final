@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trending on Pinspire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* --- Global Variables (for consistency across pages) --- */
+        :root {
+            --color-primary-light: #fcf9f6;
+            /* Very light, warm off-white/beige */
+            --color-primary-dark: #3a3a3a;
+            /* Dark charcoal for text */
+            --color-secondary-light: #fffaf5;
+            /* Slightly warmer off-white for sections */
+            --color-accent: #b26e63;
+            /* Muted Terracotta/Rose - Our main accent */
+            --color-accent-hover: #c58c82;
+            /* Lighter shade of accent for hover */
+            --color-text-muted: #666;
+            /* Softer text color */
+
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Poppins', sans-serif;
+            --font-logo: 'Dancing Script', cursive;
+            --font-alt-title: 'Lora', serif;
+
+            --box-shadow-light: 0 4px 10px rgba(0, 0, 0, 0.05);
+            --box-shadow-medium: 0 8px 20px rgba(0, 0, 0, 0.1);
+            --box-shadow-heavy: 0 12px 30px rgba(0, 0, 0, 0.15);
+
+            --primary-nav-height: 70px;
+            --max-content-width: 1200px;
+            /* Consistent content width */
+        }
+
+        /* --- Base Styles --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-primary-light);
+            color: var(--color-primary-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+            /* Prevent horizontal scroll */
+        }
+
+        .container {
+            max-width: var(--max-content-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- Navbar --- */
+        .navbar {
+            background: white;
+            display: flex;
+            align-items: center;
+            padding: 1rem 40px;
+            /* Generous padding for full width */
+            box-shadow: var(--box-shadow-light);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: var(--primary-nav-height);
+            width: 100%;
+            /* Full width */
+        }
+
+        .navbar-content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            /* Pushes logo left, links right initially */
+            align-items: center;
+            width: 100%;
+            max-width: var(--max-content-width);
+            /* Constrain content width */
+            margin: 0 auto;
+            /* Center the content */
+            gap: 20px;
+            /* Gap between logo/search/links */
+        }
+
+        .logo {
+            font-family: var(--font-logo);
+            font-size: 2.5rem;
+            /* Larger logo */
+            color: var(--color-primary-dark);
+            line-height: 1;
+            text-decoration: none;
+            /* Ensure no underline */
+            white-space: nowrap;
+            /* Prevent logo from wrapping */
+        }
+
+        /* Search Bar in Navbar */
+        .navbar-search {
+            flex-grow: 1;
+            /* Allows it to take up available space */
+            display: flex;
+            justify-content: center;
+            /* Center the input within its flex-grow area */
+            max-width: 600px;
+            /* Limit search bar width */
+        }
+
+        .navbar-search input {
+            padding: 0.7rem 1.5rem;
+            width: 100%;
+            /* Take full width of its container */
+            border-radius: 30px;
+            /* More rounded */
+            border: 1px solid #ddd;
+            outline: none;
+            font-size: 1rem;
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+            background-color: var(--color-secondary-light);
+            /* Slight background */
+            color: var(--color-primary-dark);
+        }
+
+        .navbar-search input::placeholder {
+            color: var(--color-text-muted);
+            opacity: 0.8;
+        }
+
+        .navbar-search input:focus {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 8px rgba(var(--color-accent-rgb), 0.2);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            /* Increased gap */
+            white-space: nowrap;
+            /* Prevent links from wrapping */
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--color-primary-dark);
+            font-size: 1.05rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: var(--color-accent);
+            bottom: -5px;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--color-accent);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* --- Page-specific Header (Trending Title) --- */
+        .page-header {
+            text-align: center;
+            padding: 2.5rem 20px 1.5rem;
+            background-color: transparent;
+        }
+
+        .page-header h2 {
+            margin: 0;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            text-transform: lowercase;
+            color: #5a3e36;
+            background: linear-gradient(90deg, #8d5a4f, #d79b7d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 1px 1px 6px rgba(198, 158, 126, 0.3);
+            animation: fadeIn 1.8s ease-out;
+            font-size: 2.8rem;
+            letter-spacing: normal;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        /* --- Original Body and Grid Styles --- */
+        body {
+            background: linear-gradient(to right, #f6ede0, #fcefe3);
+            font-family: 'Raleway', sans-serif;
+            color: #111;
+        }
+
+        .grid {
+            columns: 3 250px;
+            column-gap: 1rem;
+            padding: 1.5rem;
+            max-width: var(--max-content-width);
+            margin: 0 auto;
+        }
+
+        .pin {
+            break-inside: avoid;
+            margin-bottom: 1rem;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            border: none;
+        }
+
+        .pin:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .pin img {
+            width: 100%;
+            height: auto;
+            display: block;
+            max-height: 450px;
+            object-fit: cover;
+        }
+
+        /* Styles for when captions are visible (for static pins) */
+        .pin .caption {
+            padding: 10px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #6a4f4b;
+            background-color: transparent;
+            border-top: none;
+        }
+
+        /* Hide caption for API-fetched pins by default */
+        .pin.api-pin .caption {
+            display: none;
+        }
+
+        /* --- "View More" Link at the very bottom --- */
+        #link {
+            text-align: center;
+            margin: 2rem 0; /* Increased margin for better separation */
+            display: block; /* Ensure it's always block level */
+        }
+
+        #link a {
+            color: #804e46;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: 2px solid #804e46;
+            padding: 8px 18px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            display: inline-block;
+            box-shadow: none;
+        }
+
+        #link a:hover {
+            background-color: #804e46;
+            color: white;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 1rem;
+            color: #a77d66;
+            background-color: #fffaf3;
+            border-top: 1px solid #e8d5c4;
+            margin-top: 2rem;
+        }
+
+        /* --- Media Queries for Responsiveness --- */
+        @media (max-width: 1024px) {
+            .navbar-content-wrapper {
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 10px 0;
+            }
+
+            .logo {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+
+            .navbar-search {
+                order: 3;
+                width: 90%;
+                margin-top: 10px;
+            }
+
+            .nav-links {
+                order: 2;
+                width: 100%;
+                justify-content: center;
+                gap: 1.5rem;
+            }
+
+            .navbar {
+                height: auto;
+                padding: 1rem 20px;
+            }
+
+            .page-header h2 {
+                font-size: 2.2rem;
+            }
+
+            .grid {
+                columns: 2 150px;
+                column-gap: 1rem;
+            }
+
+            .pin {
+                margin-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .nav-links a {
+                font-size: 0.95rem;
+            }
+
+            .navbar-search {
+                max-width: 100%;
+            }
+
+            .page-header {
+                padding: 1.5rem 15px 1rem;
+            }
+
+            .page-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .grid {
+                columns: 1 100%;
+                padding: 1.5rem 15px;
+                column-gap: 0;
+            }
+
+            .pin {
+                max-width: 400px;
+                margin: 0 auto 1rem auto;
+            }
+
+            .caption {
+                padding: 10px;
+                font-size: 1rem;
+            }
+
+            #link a {
+                padding: 8px 18px;
+                font-size: 1rem;
+            }
+
+            footer {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 0.8rem 10px;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+                margin-bottom: 5px;
+            }
+
+            .nav-links {
+                font-size: 0.85rem;
+                gap: 0.8rem;
+            }
+
+            .navbar-search input {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .page-header {
+                padding: 1rem 10px 0.5rem;
+            }
+
+            .page-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .grid {
+                padding: 1rem 10px;
+            }
+
+            .pin {
+                margin-bottom: 0.8rem;
+            }
+
+            #link a {
+                padding: 6px 15px;
+                font-size: 0.85rem;
+            }
+
+            footer {
+                padding: 10px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="navbar-content-wrapper">
+            <a href="index.html" class="logo">Pinspire</a>
+
+            <div class="navbar-search">
+                <input type="text" placeholder="Search your inspiration..." id="search-input">
+            </div>
+
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="explore.html">Explore</a>
+                <a href="trending.html" class="active">Trending</a>
+                <a href="profile.html">Profile</a>
+            </nav>
+        </div>
+    </header>
+
+    <header class="page-header">
+        <h2>✨ Trending on pinspire ✨</h2>
+    </header>
+
+    <div class="grid container" id="pinGrid">
+        </div>
+
+    <div id="loading-message" style="text-align: center; margin-top: 30px; font-style: italic; color: #6a4f4b; display: none;"></div>
+    <div id="no-results-message" style="text-align: center; margin-top: 30px; font-style: italic; color: #6a4f4b; display: none;"></div>
+
+    <div id="link">
+        <a href="trending1.html">View More</a>
+    </div>
+
+    <footer>
+        made with 💖 by HRNSS | keep inspiring ✨
+    </footer>
+
+    <script>
+        const PEXELS_API_KEY = 'FzzZOBupN5SHYO0o0fSgK36mnuEhA6iPN7gdGz4i13sAESHA8EiHXcmb'; // Your Pexels API Key
+
+        // Original static pins data
+        const ALL_STATIC_PINS = [
+            { src: "art and diy.jpg", caption: 'DIY & Art' },
+            { src: "cafe hopping.jpg", caption: 'Cafe Hopping' },
+            { src: "motivational.jpg", caption: 'Motivational' },
+            { src: "outfit ideas.jpg", caption: 'Outfit Inspo' },
+            { src: "sunsets.jpg", caption: 'Sunsets' },
+            { src: "children.jpg", caption: 'Children\'s Rights' },
+            { src: "coffee.jpg", caption: 'Coffee First ☕' },
+            { src: "shopping.jpg", caption: 'Shopping Haul 🛍️' },
+            { src: "lyrics.jpg", caption: 'Lyric Vibes 🎵' },
+            { src: "90s bollywood.jpg", caption: '90s Bollywood Nostalgia 🎬' },
+            { src: "books.jpg", caption: 'Romance Reads 📚' },
+            { src: "digital journalling.jpg", caption: 'Digital Journalling ✍️' }
+        ];
+
+        const pinGrid = document.getElementById('pinGrid');
+        const searchInput = document.getElementById('search-input');
+        const viewMoreLink = document.getElementById('link'); // The single "View More" link
+        const loadingMessage = document.getElementById('loading-message');
+        const noResultsMessage = document.getElementById('no-results-message');
+
+        let staticPinIndex = 0; // Tracks how many static pins have been displayed
+        let currentSearchQuery = ''; // Tracks the active search term
+        let isSearchingAPI = false; // Flag to indicate if currently displaying API results
+        let apiCurrentPage = 1; // For API results pagination
+
+        const STATIC_PINS_INITIAL_LOAD_COUNT = 6;
+        const STATIC_PINS_SCROLL_LOAD_COUNT = 3;
+        const API_PINS_PER_PAGE_COUNT = 15;
+
+        // Function to create a single pin element
+        // Added a boolean `isApiPin` to control caption visibility
+        function createPinElement(src, caption, isApiPin = false) {
+            const pin = document.createElement('div');
+            pin.className = 'pin';
+            if (isApiPin) {
+                pin.classList.add('api-pin'); // Add a class to hide caption via CSS
+            }
+
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = caption; // Keep alt text for accessibility
+
+            const cap = document.createElement('div');
+            cap.className = 'caption';
+            cap.textContent = caption;
+
+            pin.appendChild(img);
+            pin.appendChild(cap);
+            return pin;
+        }
+
+        // Function to display pins (either static or API)
+        function renderPins(pinsData, clearExisting = true, isApiSource = false) {
+            if (clearExisting) {
+                pinGrid.innerHTML = ''; // Clear existing pins
+                staticPinIndex = 0; // Reset static pin index
+                apiCurrentPage = 1; // Reset API page index if a new search
+            }
+
+            if (pinsData.length === 0) {
+                noResultsMessage.textContent = currentSearchQuery ? `No results found for "${currentSearchQuery}".` : "No pins available.";
+                noResultsMessage.style.display = 'block';
+                loadingMessage.style.display = 'none';
+                return; // Don't try to render anything if no data
+            }
+
+            noResultsMessage.style.display = 'none'; // Hide no results message
+
+            if (isApiSource) {
+                pinsData.forEach(photo => {
+                    pinGrid.appendChild(createPinElement(photo.src.medium, photo.alt || 'Pexels Image', true)); // Pass true for isApiPin
+                });
+                // No need to manage a specific "View More" button for API results here,
+                // as infinite scroll is the primary method and the final button is static.
+            } else {
+                // Display static pins with pagination
+                const pinsToLoad = clearExisting ? STATIC_PINS_INITIAL_LOAD_COUNT : STATIC_PINS_SCROLL_LOAD_COUNT;
+                for (let i = 0; i < pinsToLoad && staticPinIndex < pinsData.length; i++, staticPinIndex++) {
+                    pinGrid.appendChild(createPinElement(pinsData[staticPinIndex].src, pinsData[staticPinIndex].caption, false)); // Pass false for isApiPin
+                }
+            }
+            loadingMessage.style.display = 'none'; // Hide loading message
+        }
+
+        // --- Pexels API Fetch Function ---
+        async function fetchPexelsImages(query, page, perPage) {
+            const apiUrl = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=${perPage}&page=${page}`;
+            loadingMessage.textContent = `Searching Pexels for "${query}"...`;
+            loadingMessage.style.display = 'block';
+
+            try {
+                const response = await fetch(apiUrl, {
+                    headers: {
+                        Authorization: PEXELS_API_KEY
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Pexels API Error: ${response.status} ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                return data.photos; // Return the array of photo objects
+            } catch (error) {
+                console.error("Error fetching images from Pexels:", error);
+                loadingMessage.textContent = "Failed to load search results. Check API key or network.";
+                loadingMessage.style.display = 'block';
+                return [];
+            } finally {
+                // Loading message is handled by renderPins or subsequent calls
+            }
+        }
+
+        // --- Main Load/Search Logic ---
+        async function loadContent(query, clearExisting = true, isScroll = false) {
+            currentSearchQuery = query.toLowerCase().trim();
+
+            if (currentSearchQuery === '') {
+                // --- Display STATIC PINS ---
+                isSearchingAPI = false;
+                if (clearExisting) { // Initial load or clearing search
+                    pinGrid.innerHTML = '';
+                    staticPinIndex = 0;
+                    renderPins(ALL_STATIC_PINS, false, false); // Render initial batch of static pins
+                } else if (isScroll) { // Infinite scroll for static pins
+                    renderPins(ALL_STATIC_PINS, false, false); // Continue rendering static pins
+                }
+                // The "View More" button's visibility is managed by its default display and the fixed link
+            } else {
+                // --- Display API SEARCH RESULTS ---
+                isSearchingAPI = true;
+                if (clearExisting) { // New search
+                    apiCurrentPage = 1;
+                    pinGrid.innerHTML = ''; // Clear for new search
+                } else if (isScroll) { // Infinite scroll for API results
+                    apiCurrentPage++;
+                } else {
+                    return; // Should not happen with current logic
+                }
+
+                const photos = await fetchPexelsImages(currentSearchQuery, apiCurrentPage, API_PINS_PER_PAGE_COUNT);
+
+                if (photos.length === 0 && (clearExisting || apiCurrentPage === 1)) { // No results for new search or initial API load
+                    noResultsMessage.textContent = `No results found for "${currentSearchQuery}".`;
+                    noResultsMessage.style.display = 'block';
+                    loadingMessage.style.display = 'none';
+                } else if (photos.length === 0 && !clearExisting && apiCurrentPage > 1) { // No more results on subsequent API pages
+                    loadingMessage.textContent = "No more search results.";
+                    loadingMessage.style.display = 'block';
+                    // This message will auto-hide when next scroll event triggers new loadContent
+                    setTimeout(() => { loadingMessage.style.display = 'none'; }, 2000);
+                } else {
+                    renderPins(photos, false, true); // Append API results, don't clear grid
+                }
+            }
+        }
+
+        // --- Event Listeners ---
+
+        // Initial page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadContent('', true); // Load static pins initially
+        });
+
+        // Search input with debounce
+        let searchTimeout;
+        searchInput.addEventListener('input', (event) => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const query = event.target.value;
+                loadContent(query, true); // Trigger new search/display, clear existing
+            }, 500); // Debounce time
+        });
+
+        // Infinite scroll for both static and API results
+        window.addEventListener('scroll', () => {
+            // Check if user is near bottom of the page (500px buffer)
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+                if (isSearchingAPI) {
+                    // Load more API pins if searching
+                    loadContent(currentSearchQuery, false, true);
+                } else if (staticPinIndex < ALL_STATIC_PINS.length) {
+                    // Load more static pins if not searching and more static pins available
+                    loadContent('', false, true);
+                }
+            }
+        });
+
+        // The single "View More" link always points to trending1.html
+        // No additional JavaScript needed for its functionality as it's a standard link.
+        // Its visibility is now consistent (always there at the bottom).
+    </script>
+</body>
+
+</html>

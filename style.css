@@ -1,0 +1,388 @@
+/* General Resets & Body Styles */
+:root {
+    /* --- COLOR PALETTE --- */
+    --color-primary-light: #fcf9f6; /* Very light, warm off-white/beige */
+    --color-primary-dark: #3a3a3a; /* Dark charcoal for text */
+    --color-secondary-light: #fffaf5; /* Slightly warmer off-white for sections */
+    --color-accent: #b26e63; /* Muted Terracotta/Rose - Our main accent */
+    --color-accent-hover: #c58c82; /* Lighter shade of accent for hover */
+    --color-text-muted: #666; /* Softer text color */
+
+    --font-heading: 'Poppins', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-logo: 'Dancing Script', cursive; /* Aesthetic font for the logo */
+
+    --box-shadow-light: 0 4px 10px rgba(0, 0, 0, 0.05);
+    --box-shadow-medium: 0 8px 20px rgba(0, 0, 0, 0.1);
+
+    /* Define navbar heights for calculation */
+    --primary-nav-height: 60px; /* Approximate height of primary navbar */
+    --secondary-nav-height: 48px; /* Approximate height of secondary navbar */
+    --total-nav-height: calc(var(--primary-nav-height) + var(--secondary-nav-height));
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth; /* Ensure smooth scrolling works consistently */
+}
+
+body {
+    font-family: var(--font-body);
+    line-height: 1.6;
+    color: var(--color-primary-dark);
+    background-color: var(--color-primary-light);
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* --- Navigation Bars --- */
+.navbar-primary, .navbar-secondary {
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--box-shadow-light);
+    transition: background-color 0.3s ease;
+}
+
+.navbar-primary {
+    background: var(--color-primary-light);
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    height: var(--primary-nav-height); /* Fixed height */
+    display: flex; /* For vertical centering */
+    align-items: center; /* For vertical centering */
+}
+
+.navbar-primary .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    width: 100%; /* Ensure container takes full width within flex */
+}
+
+.navbar-primary .logo {
+    font-family: var(--font-logo);
+    font-size: 2.5em;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    line-height: 1;
+}
+
+.navbar-primary nav ul {
+    list-style: none;
+    display: flex;
+}
+
+.navbar-primary nav ul li {
+    margin-left: 30px;
+}
+
+.navbar-primary nav ul li a {
+    text-decoration: none;
+    color: var(--color-primary-dark);
+    font-weight: 600;
+    padding: 5px 0;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.navbar-primary nav ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-accent);
+    bottom: -5px;
+    left: 0;
+    transition: width 0.3s ease;
+}
+
+.navbar-primary nav ul li a:hover {
+    color: var(--color-accent);
+}
+
+.navbar-primary nav ul li a:hover::after {
+    width: 100%;
+}
+
+.navbar-secondary {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 12px 0;
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    height: var(--secondary-nav-height); /* Fixed height */
+    display: flex; /* For vertical centering */
+    align-items: center; /* For vertical centering */
+}
+
+.navbar-secondary ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ensure ul takes full width within flex */
+}
+
+.navbar-secondary ul li {
+    margin: 0 25px;
+}
+
+.navbar-secondary ul li a {
+    text-decoration: none;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    padding: 8px 0;
+    position: relative;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.navbar-secondary ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-accent);
+    bottom: -4px;
+    left: 0;
+    transition: width 0.3s ease;
+}
+
+.navbar-secondary ul li a:hover {
+    color: var(--color-accent);
+    transform: translateY(-1px);
+}
+
+.navbar-secondary ul li a:hover::after {
+    width: 100%;
+}
+
+.navbar-secondary .login-signup-item {
+    margin-left: 50px;
+    position: relative;
+}
+
+.navbar-secondary .login-signup-item .nav-tab-link {
+    color: var(--color-primary-dark);
+    font-weight: 600;
+}
+
+.navbar-secondary .login-signup-item .nav-tab-link:hover {
+    color: var(--color-accent);
+}
+
+/* --- Hero Section (Video Background - Full Height & Width below nav) --- */
+.hero-section {
+    position: relative;
+    width: 100%; /* Cover full width */
+    height: calc(100vh - var(--total-nav-height)); /* Full height minus total nav height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Ensure video doesn't spill out */
+    padding-top: var(--total-nav-height); /* Push content down to avoid being under navs on initial load */
+    box-sizing: border-box; /* Include padding in height calculation */
+}
+
+.hero-video {
+    position: absolute;
+    top: 0; /* Align to top of its container */
+    left: 0; /* Align to left of its container */
+    width: 100%; /* Fill container width */
+    height: 100%; /* Fill container height */
+    z-index: 1;
+    object-fit: cover; /* Ensures the video covers the entire section */
+    /* No transform: translate(-50%, -50%) anymore because it's covering 100% height/width */
+}
+
+/* --- Content Sections (Full Page Height & Width below nav) --- */
+.content-section {
+    width: 100%; /* Cover full width */
+    min-height: calc(100vh - var(--total-nav-height)); /* Full height minus total nav height */
+    padding: 80px 0; /* Maintain content padding */
+    text-align: center;
+    background-color: var(--color-secondary-light);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    align-items: center;
+    box-sizing: border-box; /* Include padding in height calculation */
+}
+
+.content-section:nth-of-type(odd) {
+    background-color: #ffffff;
+}
+
+.content-section h2 {
+    font-family: var(--font-heading);
+    font-size: 2.5em;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    margin-bottom: 40px;
+    position: relative;
+    display: inline-block;
+}
+
+.content-section h2::after {
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 4px;
+    background-color: var(--color-accent);
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+
+.about-section p {
+    font-size: 1.1em;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+    color: var(--color-text-muted);
+}
+
+.about-section p strong {
+    color: var(--color-accent);
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+    padding-bottom: 20px; /* Add some padding to ensure grid content isn't cut off at bottom of section */
+}
+
+.feature-card {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow-light);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--box-shadow-medium);
+}
+
+.feature-card i {
+    font-size: 3em;
+    color: var(--color-accent);
+    margin-bottom: 20px;
+}
+
+.feature-card h3 {
+    font-family: var(--font-heading);
+    font-size: 1.5em;
+    color: var(--color-primary-dark);
+    margin-bottom: 15px;
+}
+
+.feature-card p {
+    font-size: 0.95em;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+}
+
+footer {
+    background-color: var(--color-primary-dark);
+    color: #fff;
+    text-align: center;
+    padding: 30px 0;
+    font-size: 0.9em;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .navbar-primary .container {
+        flex-direction: column;
+        padding: 0 20px;
+    }
+    .navbar-primary nav ul {
+        margin-top: 15px;
+    }
+    .navbar-primary nav ul li {
+        margin: 0 15px;
+    }
+    .navbar-secondary ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .navbar-secondary ul li {
+        margin: 5px 10px;
+    }
+    .navbar-secondary .login-signup-item {
+        margin-left: 10px;
+    }
+    /* Adjust calculated heights for responsive navbars */
+    :root {
+        --primary-nav-height: 90px; /* Increased for wrapped content on mobile */
+        --secondary-nav-height: 60px; /* Increased for wrapped content on mobile */
+        --total-nav-height: calc(var(--primary-nav-height) + var(--secondary-nav-height));
+    }
+    .hero-section, .content-section {
+        min-height: calc(100vh - var(--total-nav-height));
+        padding-top: 0; /* Reset padding for sections as height calculation includes it */
+    }
+    .content-section {
+        padding: 60px 0;
+    }
+    .content-section h2 {
+        font-size: 2em;
+    }
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-primary .logo {
+        font-size: 2em;
+    }
+    .navbar-primary nav ul li {
+        margin: 0 10px;
+    }
+    .navbar-secondary ul li {
+        margin: 5px 8px;
+        font-size: 0.9em;
+    }
+    /* Further adjust calculated heights for very small screens */
+    :root {
+        --primary-nav-height: 80px;
+        --secondary-nav-height: 50px;
+        --total-nav-height: calc(var(--primary-nav-height) + var(--secondary-nav-height));
+    }
+    .hero-section, .content-section {
+        min-height: calc(100vh - var(--total-nav-height));
+    }
+    .content-section {
+        padding: 40px 0;
+    }
+    .content-section h2 {
+        font-size: 1.8em;
+    }
+    .feature-card {
+        padding: 30px;
+    }
+}

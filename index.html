@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinspire - Discover, Create, Inspire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* --- CSS Variables for Easy Theming --- */
+        :root {
+            --color-primary: #8d5a4f; /* Muted Terracotta/Rose */
+            --color-primary-light: #fcf9f6; /* Very light, warm off-white/beige */
+            --color-primary-dark: #3a3a3a; /* Dark charcoal for text */
+            --color-secondary-light: #fffaf5; /* Slightly warmer off-white for sections */
+            --color-accent: #b26e63; /* Another muted terracotta/rose shade */
+            --color-accent-hover: #c58c82; /* Lighter shade of accent for hover */
+            --color-text-muted: #666; /* Softer text color */
+            --color-gradient-start: #f6ede0; /* Light background gradient start */
+            --color-gradient-end: #fcefe3;    /* Light background gradient end */
+
+            /* UPDATED colors for the secondary navbar - sleek & modern */
+            --color-secondary-nav-bg: #FBFBFB; /* Very light, almost white background */
+            --color-secondary-nav-link: #777; /* Softer, slightly darker text for links */
+            --color-secondary-nav-link-hover: var(--color-primary); /* Links get primary color on hover */
+            
+            /* Login/Signup link specific colors - now more text-like */
+            --color-secondary-nav-login-text: var(--color-accent); /* Accent color for the text */
+            --color-secondary-nav-login-text-hover: var(--color-accent-hover); /* Lighter accent on hover */
+
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Poppins', sans-serif;
+            --font-logo: 'Dancing Script', cursive;
+            --font-alt-title: 'Lora', serif; /* For section titles */
+
+            --box-shadow-light: 0 2px 5px rgba(0, 0, 0, 0.02); /* Lighter shadow for top nav */
+            --box-shadow-medium: 0 4px 10px rgba(0, 0, 0, 0.08); /* Still kept for general elements */
+            --box-shadow-heavy: 0 8px 15px rgba(0, 0, 0, 0.12); /* Still kept for general elements */
+
+            --primary-nav-height: 70px; /* Height for the primary navbar */
+            --secondary-nav-height: 55px; /* Slightly taller secondary navbar as per image */
+            --max-content-width: 1200px; /* Consistent content width */
+        }
+
+        /* --- Base Styles --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: linear-gradient(to right, var(--color-gradient-start), var(--color-gradient-end));
+            color: var(--color-primary-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            display: flex; /* Use flexbox for sticky footer effect */
+            flex-direction: column; /* Stack content vertically */
+        }
+
+        .container {
+            max-width: var(--max-content-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--color-primary);
+        }
+
+        /* --- PRIMARY NAVBAR (Top Bar) --- */
+        .navbar-primary {
+            background: white;
+            display: flex;
+            align-items: center;
+            padding: 1rem 40px; /* Generous horizontal padding for full width */
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: var(--primary-nav-height);
+            width: 100%;
+        }
+
+        .navbar-primary .navbar-content-wrapper { /* Inner container for primary navbar content */
+            display: flex;
+            justify-content: space-between; /* Pushes logo left, search center, links right */
+            align-items: center;
+            width: 100%;
+            max-width: var(--max-content-width); /* Constrain content width to align with sections */
+            margin: 0 auto; /* Center the content wrapper */
+            gap: 20px; /* Gap between logo/search/links */
+        }
+
+        .navbar-primary .logo { /* Scoped to .navbar-primary */
+            font-family: var(--font-logo);
+            font-size: 2.5rem; /* Larger logo */
+            color: var(--color-primary-dark);
+            line-height: 1;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        /* Search Bar in Primary Navbar */
+        .navbar-search {
+            flex-grow: 1; /* Allows it to take up available space */
+            display: flex;
+            justify-content: center; /* Center the input within its flex-grow area */
+            max-width: 600px; /* Limit search bar width */
+        }
+
+        .navbar-search input {
+            padding: 0.7rem 1.5rem;
+            width: 100%;
+            border-radius: 30px;
+            border: 1px solid #ddd;
+            outline: none;
+            font-size: 1rem;
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+            background-color: var(--color-secondary-light);
+            color: var(--color-primary-dark);
+        }
+
+        .navbar-search input::placeholder {
+            color: var(--color-text-muted);
+            opacity: 0.8;
+        }
+
+        .navbar-search input:focus {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 8px rgba(var(--color-accent-rgb), 0.2);
+        }
+
+        .navbar-primary .nav-links { /* Scoped to .navbar-primary */
+            display: flex;
+            gap: 2.5rem; /* Standard gap for primary links */
+            white-space: nowrap;
+        }
+
+        .navbar-primary .nav-links a { /* Scoped to .navbar-primary */
+            text-decoration: none;
+            color: var(--color-primary-dark);
+            font-size: 1.05rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .navbar-primary .nav-links a::after { /* Scoped to .navbar-primary */
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: var(--color-accent);
+            bottom: -5px;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        .navbar-primary .nav-links a:hover,
+        .navbar-primary .nav-links a.active {
+            color: var(--color-accent);
+        }
+
+        .navbar-primary .nav-links a:hover::after,
+        .navbar-primary .nav-links a.active::after {
+            width: 100%;
+        }
+
+
+        /* --- SECONDARY NAVBAR (Below Primary) - NEW SLEEK DESIGN --- */
+        .navbar-secondary {
+            background: var(--color-secondary-nav-bg); /* Very light, almost white background */
+            padding: 0.7rem 0; /* Vertical padding */
+            border-top: 1px solid rgba(0, 0, 0, 0.02); /* Very subtle line to separate from primary */
+            z-index: 999; /* Below primary navbar */
+            position: relative; /* No longer sticky, just flows after primary */
+            width: 100%;
+            height: var(--secondary-nav-height); /* Set fixed height */
+            display: flex; /* Ensure flex for centering content */
+            align-items: center; /* Vertically center content */
+            justify-content: center; /* Horizontally center content */
+        }
+
+        /* Combined header for unified shadow */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+            box-shadow: var(--box-shadow-medium); /* Apply shadow to the whole header block */
+            background: white; /* Ensure background is set for the whole sticky header */
+        }
+
+        .navbar-secondary .container { 
+            display: flex;
+            justify-content: center; /* Center the links within the container */
+            align-items: center;
+            height: 100%;
+            max-width: var(--max-content-width); 
+            margin: 0 auto; 
+            padding: 0 20px; 
+        }
+
+        .navbar-secondary ul {
+            list-style: none;
+            display: flex;
+            gap: 3rem; /* Generous gap for secondary links */
+            align-items: center; /* Align items vertically */
+        }
+
+        .navbar-secondary ul li a {
+            color: var(--color-secondary-nav-link); /* Muted text color */
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 8px 18px; /* Balanced padding */
+            border-radius: 8px; /* Modern, soft corners */
+            transition: color 0.3s ease, background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; 
+            position: relative; /* For potential underline effect */
+        }
+
+        /* Hover effect for standard secondary nav links */
+        .navbar-secondary ul li a:not(.nav-tab-link):hover {
+            color: var(--color-secondary-nav-link-hover); /* Primary color on hover */
+            background-color: transparent; /* Keep background transparent */
+            transform: translateY(-2px); /* Subtle lift */
+            box-shadow: none; /* No shadow */
+        }
+        
+        /* Optional: Subtle underline for standard secondary nav links on hover */
+        .navbar-secondary ul li a:not(.nav-tab-link)::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: var(--color-secondary-nav-link-hover);
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: width 0.3s ease;
+        }
+
+        .navbar-secondary ul li a:not(.nav-tab-link):hover::after {
+            width: 80%; /* Expand underline on hover */
+        }
+
+
+        /* UPDATED LOGIN/SIGN UP LINK - NO COLORED BOX */
+        .navbar-secondary ul li a.nav-tab-link { 
+            background-color: transparent; /* Removed background color */
+            color: var(--color-secondary-nav-login-text); /* Use accent color for text */
+            font-weight: 600;
+            padding: 10px 15px; /* Adjust padding for text-like feel */
+            border-radius: 8px; /* Still maintain soft corners */
+            box-shadow: none; /* Removed box shadow */
+            border: 1px solid transparent; /* Add a transparent border for hover effect */
+            outline: none; 
+            display: inline-flex; 
+            align-items: center;
+            gap: 8px; 
+            transition: color 0.3s ease, border-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+        }
+
+        .navbar-secondary ul li a.nav-tab-link:hover {
+            background-color: transparent; /* Keep background transparent */
+            color: var(--color-secondary-nav-login-text-hover); /* Lighter accent on hover */
+            transform: translateY(-2px); /* Subtle lift */
+            box-shadow: none; /* No box shadow */
+            border-color: var(--color-secondary-nav-login-text-hover); /* Accent colored border on hover */
+        }
+
+
+        /* --- Hero Section (Video ONLY) --- */
+        .hero-section {
+            position: relative;
+            width: 100%;
+            /* Calculate height to fill remaining viewport after both navbars */
+            height: calc(100vh - var(--primary-nav-height) - var(--secondary-nav-height));
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #000; /* Fallback background for video */
+            flex-shrink: 0; /* Prevent it from shrinking */
+        }
+
+        .hero-video {
+            position: absolute; /* Absolute positioning within the hero-section */
+            top: 50%;
+            left: 50%;
+            min-width: 100%; /* Ensure video always covers the section */
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%); /* Center the video */
+            object-fit: cover; /* Ensures video covers without distortion */
+            z-index: 0; /* Ensures video is background */
+        }
+
+        /* --- Content Sections (About, Features) --- */
+        .content-section {
+            padding: 6rem 0; /* Generous vertical padding */
+            text-align: center;
+            flex-grow: 1; /* Allow sections to grow and fill space */
+            display: flex; /* Use flexbox to center content vertically if needed */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center; /* Center content horizontally within flex container */
+        }
+
+        .about-section {
+            background-color: var(--color-secondary-light);
+            padding: 8rem 0; /* Increased padding for more vertical presence */
+            /* Ensure it fills screen below navs by taking remaining height */
+            min-height: calc(100vh - var(--primary-nav-height) - var(--secondary-nav-height)); 
+            box-shadow: inset 0 5px 15px rgba(0, 0, 0, 0.03); /* Subtle inner shadow */
+        }
+
+        .content-section h2 {
+            font-family: var(--font-alt-title); /* Use alternative font for section titles */
+            font-size: 2.8rem;
+            color: var(--color-primary);
+            margin-bottom: 2.5rem;
+            position: relative;
+            display: inline-block; /* To apply underline effect */
+            animation: slideInUp 1s ease-out forwards;
+            opacity: 0; /* Hidden initially for animation */
+        }
+
+        .content-section h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -10px;
+            width: 80px;
+            height: 3px;
+            background-color: var(--color-accent);
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .content-section p {
+            max-width: 800px;
+            margin: 0 auto 1.5rem auto;
+            font-size: 1.15rem;
+            color: var(--color-text-muted);
+            line-height: 1.8;
+            animation: fadeIn 1.5s ease-out forwards;
+            animation-delay: 0.5s; /* Delay for text after heading */
+            opacity: 0;
+        }
+
+        /* Features Grid Alignment & Look */
+        .features-section {
+            background-color: var(--color-primary-light);
+            padding: 8rem 0; /* Increased padding for more vertical presence */
+            /* Ensure it fills screen below navs by taking remaining height */
+            min-height: calc(100vh - var(--primary-nav-height) - var(--secondary-nav-height)); 
+            display: flex; /* Use flexbox to center content vertically */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center; /* Center content horizontally within flex container */
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem; /* Consistent spacing */
+            margin-top: 3rem;
+            padding: 0 20px; /* Add horizontal padding to the grid itself for smaller screens */
+            max-width: var(--max-content-width); /* Ensure grid respects container width */
+            margin-left: auto; /* Center the grid */
+            margin-right: auto; /* Center the grid */
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: var(--box-shadow-light);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border: 1px solid rgba(0, 0, 0, 0.05); /* Subtle border for definition */
+            box-sizing: border-box; /* Ensure padding/border included in width */
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--box-shadow-medium);
+        }
+
+        .feature-card i {
+            font-size: 3.5rem;
+            color: var(--color-accent);
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover i {
+            transform: scale(1.1);
+        }
+
+        .feature-card h3 {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            color: var(--color-primary);
+            margin-bottom: 0.8rem;
+            font-weight: 600; /* Make feature titles a bit bolder */
+        }
+
+        .feature-card p {
+            font-size: 1rem;
+            color: var(--color-text-muted);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* Animations for sections on scroll (using JavaScript Intersection Observer) */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--color-primary-dark);
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            padding: 1.5rem 0;
+            font-size: 0.9rem;
+            margin-top: auto; /* Push footer to the bottom */
+            flex-shrink: 0; /* Prevent it from shrinking */
+        }
+
+        /* --- MEDIA QUERIES FOR RESPONSIVENESS --- */
+        @media (max-width: 1024px) {
+            /* Primary Navbar adjustments for smaller screens */
+            .navbar-primary .navbar-content-wrapper {
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 10px 0;
+            }
+            .navbar-primary .logo {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+            .navbar-search {
+                order: 3;
+                width: 90%;
+                margin-top: 10px;
+            }
+            .navbar-primary .nav-links {
+                order: 2;
+                width: 100%;
+                justify-content: center;
+                gap: 1.5rem;
+            }
+            .navbar-primary {
+                height: auto;
+                padding: 1rem 20px;
+            }
+            /* Secondary nav also flows naturally */
+            .navbar-secondary {
+                height: auto; /* Allow height to adjust */
+                padding: 0.7rem 20px; /* Adjust padding */
+            }
+
+            /* Hero and content sections will adapt */
+            .hero-section {
+                height: 70vh; /* Make hero section a bit smaller on tablet */
+            }
+            .content-section {
+                padding: 6rem 0; /* Adjust section padding for tablet */
+                min-height: auto; /* Remove min-height for sections on smaller screens so they don't force too much scroll */
+            }
+            .about-section, .features-section {
+                 min-height: auto; /* Allow sections to adapt their height */
+                 padding: 6rem 0; /* Consistent padding */
+            }
+            .content-section h2 {
+                font-size: 2.4rem;
+            }
+            .content-section p {
+                font-size: 1.05rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* Primary Navbar */
+            .navbar-primary .logo {
+                font-size: 2rem;
+            }
+            .navbar-primary .nav-links {
+                gap: 1rem;
+            }
+            .navbar-primary .nav-links a {
+                font-size: 0.95rem;
+            }
+            .navbar-search {
+                max-width: 100%;
+            }
+
+            /* Secondary Navbar */
+            .navbar-secondary {
+                height: auto;
+                padding: 1rem 20px;
+            }
+            .navbar-secondary .container {
+                flex-direction: column; /* Stack secondary nav links */
+                gap: 10px;
+            }
+            .navbar-secondary ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.8rem;
+            }
+
+            /* Hero Section */
+            .hero-section {
+                height: 60vh; /* Further reduce height on mobile */
+            }
+
+            /* Content Sections */
+            .content-section {
+                padding: 4rem 0;
+            }
+            .content-section h2 {
+                font-size: 2rem;
+                margin-bottom: 2rem;
+            }
+            .content-section p {
+                font-size: 0.95rem;
+            }
+            .feature-grid {
+                grid-template-columns: 1fr; /* Single column for features */
+                padding: 0 15px;
+            }
+            .feature-card {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* Primary Navbar */
+            .navbar-primary .logo {
+                font-size: 1.8rem;
+            }
+            .navbar-primary .nav-links {
+                gap: 0.8rem;
+            }
+            .navbar-primary .nav-links a {
+                font-size: 0.9rem;
+            }
+            .navbar-search input {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            /* Secondary Navbar */
+            .navbar-secondary ul li a {
+                font-size: 0.85rem;
+                padding: 6px 12px;
+            }
+
+            /* Hero Section */
+            .hero-section {
+                height: 50vh;
+            }
+
+            /* Content Sections */
+            .content-section h2 {
+                font-size: 1.8rem;
+            }
+            .content-section p {
+                font-size: 0.85rem;
+            }
+            .feature-card {
+                padding: 1.5rem;
+            }
+            .feature-card i {
+                font-size: 3rem;
+            }
+            .feature-card h3 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar-primary">
+            <div class="navbar-content-wrapper">
+                <a href="index.html" class="logo">Pinspire</a>
+                <div class="navbar-search">
+                    <input type="text" placeholder="Search your inspiration..." id="search-input">
+                </div>
+                <div class="nav-links">
+                    <a href="index.html" class="active">Home</a>
+                    <a href="explore.html">Explore</a>
+                    <a href="trending.html">Trending</a>
+                    <a href="profile.html">Profile</a>
+                </div>
+            </div>
+        </nav>
+
+        <nav class="navbar-secondary">
+            <div class="container">
+                <ul>
+                    <li><a href="#about-section">About</a></li>
+                    <li><a href="#features-section">Features</a></li>
+                    <li class="login-signup-item"><a href="login.html" class="nav-tab-link">Login / Sign Up</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <section id="home" class="hero-section">
+        <video autoplay muted loop playsinline class="hero-video">
+            <source src="welcome.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </section>
+
+    <section id="about-section" class="content-section about-section">
+        <div class="container">
+            <h2>About Pinspire</h2>
+            <p>Pinspire is your go-to destination for **visual discovery and boundless creativity**. We believe in the power of images to inspire, connect, and transform ideas into reality. Dive into a world where every pin sparks a new possibility.</p>
+        </div>
+    </section>
+
+    <section id="features-section" class="content-section features-section">
+        <div class="container">
+            <h2>Discover Our Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Endless Inspiration</h3>
+                    <p>Explore millions of high-quality images and videos curated to ignite your next big idea.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-palette"></i>
+                    <h3>Seamless Creation</h3>
+                    <p>Easily upload, organize, and share your own projects and visual collections with the world.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Connect & Collaborate</h3>
+                    <p>Follow creators, engage with communities, and collaborate on shared vision boards.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-magic"></i>
+                    <h3>Personalized Feeds</h3>
+                    <p>Our smart algorithms tailor your feed to your unique interests, ensuring a constant stream of what you love.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Pinspire. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth Scrolling for secondary nav links (About, Features)
+        document.querySelectorAll('.navbar-secondary ul li a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault(); // Prevent default link behavior for smooth scroll
+                const targetId = this.getAttribute('href');
+                document.querySelector(targetId).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Intersection Observer for section animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.2 // Trigger when 20% of the element is visible
+        };
+
+        const fadeInObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.tagName === 'H2') {
+                        entry.target.style.animation = 'slideInUp 1s ease-out forwards';
+                    } else if (entry.target.tagName === 'P') {
+                        entry.target.style.animation = 'fadeIn 1.5s ease-out forwards';
+                    }
+                    observer.unobserve(entry.target); // Stop observing once animated
+                }
+            });
+        }, observerOptions);
+
+        // Apply observer to section headings and paragraphs
+        document.querySelectorAll('.content-section h2, .content-section p').forEach(element => {
+            element.style.opacity = '0'; // Ensure elements are hidden initially for animation
+            fadeInObserver.observe(element);
+        });
+
+        // Observe feature cards for staggered animation
+        const featureCardObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    // Apply a slightly delayed fade-in animation for each card
+                    entry.target.style.animation = `fadeIn 0.6s ease-out ${index * 0.15}s forwards`; 
+                    entry.target.style.opacity = '0'; // Ensure hidden initially
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 }); // Trigger when 10% of card is visible
+
+        document.querySelectorAll('.feature-card').forEach((card, index) => {
+            featureCardObserver.observe(card);
+        });
+    </script>
+</body>
+</html>

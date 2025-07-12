@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pinspire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* --- Global Variables (for consistency across pages) --- */
+        :root {
+            --color-primary-light: #fcf9f6;
+            /* Very light, warm off-white/beige */
+            --color-primary-dark: #3a3a3a;
+            /* Dark charcoal for text */
+            --color-secondary-light: #fffaf5;
+            /* Slightly warmer off-white for sections */
+            --color-accent: #b26e63;
+            /* Muted Terracotta/Rose - Our main accent */
+            --color-accent-hover: #c58c82;
+            /* Lighter shade of accent for hover */
+            --color-text-muted: #666;
+            /* Softer text color */
+
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Poppins', sans-serif;
+            --font-logo: 'Dancing Script', cursive;
+            --font-alt-title: 'Lora', serif;
+
+            --box-shadow-light: 0 4px 10px rgba(0, 0, 0, 0.05);
+            --box-shadow-medium: 0 8px 20px rgba(0, 0, 0, 0.1);
+            --box-shadow-heavy: 0 12px 30px rgba(0, 0, 0, 0.15);
+
+            --primary-nav-height: 70px;
+            --max-content-width: 1200px; /* Increased content width for gallery */
+        }
+
+        /* --- Base Styles --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-primary-light);
+            color: var(--color-primary-dark);
+            min-height: 100vh;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        .container {
+            max-width: var(--max-content-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- Navbar --- */
+        .navbar {
+            background: white;
+            display: flex;
+            align-items: center;
+            padding: 1rem 40px; /* Generous padding for full width */
+            box-shadow: var(--box-shadow-light);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: var(--primary-nav-height);
+            width: 100%; /* Full width */
+        }
+
+        .navbar-content-wrapper {
+            display: flex;
+            justify-content: space-between; /* Pushes logo left, links right initially */
+            align-items: center;
+            width: 100%;
+            max-width: var(--max-content-width); /* Constrain content width */
+            margin: 0 auto; /* Center the content */
+            gap: 20px; /* Gap between logo/search/links */
+        }
+
+        .logo {
+            font-family: var(--font-logo);
+            font-size: 2.5rem; /* Larger logo */
+            color: var(--color-primary-dark);
+            line-height: 1;
+            text-decoration: none; /* Ensure no underline */
+            white-space: nowrap; /* Prevent logo from wrapping */
+        }
+
+        /* Search Bar in Navbar */
+        .navbar-search {
+            flex-grow: 1; /* Allows it to take up available space */
+            display: flex;
+            justify-content: center; /* Center the input within its flex-grow area */
+            max-width: 600px; /* Limit search bar width */
+        }
+
+        .navbar-search input {
+            padding: 0.7rem 1.5rem;
+            width: 100%; /* Take full width of its container */
+            border-radius: 30px; /* More rounded */
+            border: 1px solid #ddd;
+            outline: none;
+            font-size: 1rem;
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+            background-color: var(--color-secondary-light); /* Slight background */
+            color: var(--color-primary-dark);
+        }
+
+        .navbar-search input::placeholder {
+            color: var(--color-text-muted);
+            opacity: 0.8;
+        }
+
+        .navbar-search input:focus {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 8px rgba(var(--color-accent-rgb), 0.2);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem; /* Increased gap */
+            white-space: nowrap; /* Prevent links from wrapping */
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--color-primary-dark);
+            font-size: 1.05rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: var(--color-accent);
+            bottom: -5px;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--color-accent);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* --- Main Gallery --- */
+        #gallery {
+            padding: 2rem 20px; /* Consistent padding */
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Slightly larger min column size */
+            gap: 1.5rem; /* Increased gap */
+            max-width: var(--max-content-width); /* Align with navbar content */
+            margin: 2rem auto; /* Center gallery and add vertical spacing */
+        }
+
+        .pin {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--box-shadow-medium); /* Use defined shadow */
+            background: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0, 0, 0, 0.05); /* Subtle border */
+        }
+
+        .pin:hover {
+            transform: translateY(-7px); /* More pronounced lift */
+            box-shadow: var(--box-shadow-heavy); /* Heavier shadow on hover */
+        }
+
+        .pin img {
+            width: 100%;
+            height: 280px; /* Slightly taller images */
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .pin:hover img {
+            transform: scale(1.08); /* More pronounced zoom */
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-around;
+            align-items: center; /* Vertically align items */
+            padding: 0.8rem;
+            background: #fff;
+            border-top: 1px solid #eee;
+        }
+
+        .like-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem; /* Larger icon */
+            cursor: pointer;
+            color: #bbb;
+            transition: color 0.3s ease, transform 0.2s ease;
+            display: flex; /* For possible future text beside icon */
+            align-items: center;
+            gap: 5px;
+        }
+
+        .like-btn.liked {
+            color: #ff4d4d; /* More vibrant red */
+            animation: pulse 0.5s ease-in-out; /* Pulse animation */
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .like-btn:not(.liked):hover { /* Only scale non-liked button */
+            color: #a4574e;
+            transform: scale(1.1);
+        }
+        .like-btn:active {
+            transform: scale(0.95);
+        }
+
+
+        .actions button.share-btn {
+            background: var(--color-accent);
+            border: none;
+            color: white;
+            padding: 0.6rem 1.2rem; /* Larger padding */
+            border-radius: 25px; /* More rounded */
+            font-size: 0.95rem; /* Slightly larger font */
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Space for icon */
+        }
+
+        .actions button.share-btn:hover {
+            background: var(--color-accent-hover);
+            transform: translateY(-2px);
+        }
+        .actions button.share-btn:active {
+            transform: translateY(0);
+        }
+
+
+        #loading {
+            text-align: center;
+            padding: 2rem; /* More padding */
+            font-size: 1.1rem; /* Larger font */
+            color: var(--color-text-muted);
+            font-weight: 500;
+        }
+
+        /* --- Media Queries for Responsiveness --- */
+        @media (max-width: 1024px) {
+            .navbar-content-wrapper {
+                flex-wrap: wrap; /* Allow items to wrap */
+                justify-content: center; /* Center items when wrapped */
+                padding: 10px 0; /* Add vertical padding for wrapped content */
+            }
+            .logo {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 10px; /* Space below logo when wrapped */
+            }
+            .navbar-search {
+                order: 3; /* Move search to bottom when wrapped */
+                width: 90%; /* Make search wider on smaller screens */
+                margin-top: 10px;
+            }
+            .nav-links {
+                order: 2; /* Move links below logo when wrapped */
+                width: 100%;
+                justify-content: center;
+                gap: 1.5rem;
+            }
+            .navbar {
+                height: auto; /* Auto height for wrapped content */
+                padding: 1rem 20px;
+            }
+            #gallery {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                gap: 1.2rem;
+            }
+            .pin img {
+                height: 220px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+            .nav-links {
+                gap: 1rem;
+            }
+            .nav-links a {
+                font-size: 0.95rem;
+            }
+            .navbar-search {
+                max-width: 100%; /* Full width search on very small screens */
+            }
+            #gallery {
+                padding: 1.5rem 15px;
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Smaller min size for mobile */
+                gap: 1rem;
+            }
+            .pin img {
+                height: 180px;
+            }
+            .actions {
+                padding: 0.6rem;
+            }
+            .like-btn {
+                font-size: 1.3rem;
+            }
+            .actions button.share-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 0.8rem 10px;
+            }
+            .logo {
+                font-size: 1.8rem;
+                margin-bottom: 5px;
+            }
+            .nav-links {
+                font-size: 0.85rem;
+                gap: 0.8rem;
+            }
+            .navbar-search input {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            #gallery {
+                padding: 1rem 10px;
+                gap: 0.8rem;
+            }
+            .pin img {
+                height: 150px;
+            }
+            .like-btn {
+                font-size: 1.1rem;
+            }
+            .actions button.share-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="navbar-content-wrapper">
+            <a href="index.html" class="logo">Pinspire</a>
+
+            <div class="navbar-search">
+                <input type="text" placeholder="Search your inspiration..." id="search-input">
+            </div>
+
+            <nav class="nav-links">
+                <a href="index.html" class="active">Home</a>
+                <a href="explore.html">Explore</a>
+                <a href="trending.html">Trending</a>
+                <a href="profile.html">Profile</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="gallery" class="container"></main>
+    <div id="loading">Loading more pins...</div>
+
+    <script>
+        const gallery = document.getElementById("gallery");
+        const loading = document.getElementById("loading");
+        const searchInput = document.getElementById("search-input"); // Get the search input
+        let loadingImages = false;
+        let imageCount = 0;
+        let currentQuery = ''; // Store the current search query
+
+        // Unsplash API client ID (replace with your actual client ID)
+        const unsplashClientId = '4wgMoe-SXEHdJjLntU11-4XXgMLszoMP9SiKT_Js5P0';
+
+        async function fetchImages(query = '', count = 10) {
+            let apiUrl = `https://api.unsplash.com/photos/random?count=${count}&client_id=${unsplashClientId}`;
+            if (query) {
+                apiUrl = `https://api.unsplash.com/search/photos?query=${query}&per_page=${count}&client_id=${unsplashClientId}`;
+            }
+
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                
+                // For search results, the images are in data.results
+                return query ? data.results.map(img => img.urls.regular) : data.map(img => img.urls.regular);
+            } catch (error) {
+                console.error("Error fetching images from Unsplash:", error);
+                loading.innerText = "Failed to load pins. Check your API key or network connection.";
+                return []; // Return empty array on error
+            }
+        }
+
+        async function loadImages(query = '', count = 10, clearGallery = false) {
+            if (loadingImages) return;
+            loadingImages = true;
+            loading.innerText = "Loading more pins...";
+
+            if (clearGallery) {
+                gallery.innerHTML = ''; // Clear existing images for new search
+                imageCount = 0; // Reset image count for new search
+            }
+
+            try {
+                const imageUrls = await fetchImages(query, count);
+
+                if (imageUrls.length === 0 && imageCount === 0) {
+                    loading.innerText = query ? "No results found for your search." : "No pins available to load.";
+                    loadingImages = false;
+                    return;
+                } else if (imageUrls.length === 0) {
+                     loading.innerText = "No more pins to load.";
+                     loadingImages = false;
+                     return;
+                }
+
+
+                imageUrls.forEach(url => {
+                    const pin = document.createElement("div");
+                    pin.className = "pin";
+
+                    const img = document.createElement("img");
+                    img.src = url;
+                    img.alt = "Aesthetic Pin";
+
+                    const actions = document.createElement("div");
+                    actions.className = "actions";
+
+                    const likeBtn = document.createElement("button");
+                    likeBtn.className = "like-btn";
+                    likeBtn.innerHTML = '<i class="fas fa-heart"></i>'; // Font Awesome heart
+
+                    likeBtn.addEventListener("click", () => {
+                        likeBtn.classList.toggle("liked");
+                    });
+
+                    const shareBtn = document.createElement("button");
+                    shareBtn.className = "share-btn";
+                    shareBtn.innerHTML = '<i class="fas fa-share-alt"></i> Share'; // Font Awesome share
+
+                    shareBtn.addEventListener("click", () => {
+                        navigator.clipboard.writeText(url);
+                        alert("Image URL copied to clipboard!");
+                    });
+
+                    actions.appendChild(likeBtn);
+                    actions.appendChild(shareBtn);
+
+                    pin.appendChild(img);
+                    pin.appendChild(actions);
+
+                    gallery.appendChild(pin);
+                });
+
+                loadingImages = false;
+                imageCount += imageUrls.length;
+                loading.innerText = "Loading more pins..."; // Reset loading message
+            } catch (err) {
+                console.error("Error in loadImages:", err);
+                loading.innerText = "Failed to load pins. Try refreshing.";
+                loadingImages = false;
+            }
+        }
+
+        // Initial load of random images
+        loadImages();
+
+        // Event listener for search input
+        let searchTimeout;
+        searchInput.addEventListener("input", (event) => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                currentQuery = event.target.value.trim();
+                loadImages(currentQuery, 20, true); // Load more for search, clear existing
+            }, 500); // Debounce search
+        });
+
+        // Infinite scroll
+        window.addEventListener("scroll", () => {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 && !loadingImages) {
+                loadImages(currentQuery, 10, false); // Keep same query, don't clear
+            }
+        });
+    </script>
+
+</body>
+
+</html>
