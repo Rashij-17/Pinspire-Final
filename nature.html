@@ -4,146 +4,171 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nature | Pinspire</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Raleway:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
   <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    body{
-      font-family: 'Raleway', sans-serif;
-      background:#fdf8f5;
-      color:#333;
-      overflow-x: hidden;
-    }
-    .navbar{
-      background:white;
-      box-shadow:0 2px 8px rgba(0,0,0,.08);
-      position:sticky;top:0;z-index:999;
-      padding:0 1.5rem;
-      display:flex;align-items:center;gap:2rem;
-    }
-    .navbar h1{
-      font-size:1.4rem;
-      color:#b26e63;
-      padding:.8rem 0;
-      font-family: 'Playfair Display', serif;
-    }
-    .nav-links{
-      margin-left:auto;
-      display:flex;gap:1.2rem;
-    }
-    .nav-links a{
-      text-decoration:none;color:#555;font-weight:600;position:relative;
-    }
-    .nav-links a::after{
-      content:"";position:absolute;left:0;bottom:-3px;height:2px;width:0;
-      background:#b26e63;transition:width .25s ease;
-    }
-    .nav-links a:hover::after{width:100%;}
-    .nav-links a:hover{color:#d87093;}
-    .page-title {
-      text-align: center;
-      margin: 2.5rem 0 1.5rem;
-      font-size: 2.8rem;
-      color: #8c4f48;
-      font-family: 'Playfair Display', serif;
-    }
-    .gallery {
-      column-count: 4;
-      column-gap: 1.5rem;
-      max-width: 1200px;
-      margin: 0 auto 4rem;
-      padding: 0 2rem;
-    }
-    @media (max-width: 1024px) {.gallery { column-count: 3; }}
-    @media (max-width: 768px) {.gallery { column-count: 2; }}
-    @media (max-width: 480px) {.gallery { column-count: 1; }}
-    .gallery img{
-      width:100%;
-      margin-bottom: 1.5rem;
-      height:auto;
-      object-fit:cover;
-      border-radius:10px;
-      box-shadow:0 4px 12px rgba(0,0,0,.08);
-      transition:transform .25s ease;
-      cursor: pointer;
-    }
-    .gallery img:hover{transform:scale(1.05);}
-    .popup {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.8);
-      display: none;
-      z-index: 2000;
-      overflow: auto;
-    }
-    .popup-content {
-      background: #fff;
-      margin: 2rem auto;
-      border-radius: 16px;
-      max-width: 1000px;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
-    .popup-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .popup-header .close-btn {
-      font-size: 22px;
-      cursor: pointer;
-      color: #333;
-    }
-    .popup-main-img {
-      width: 100%;
-      border-radius: 10px;
-      max-height: 600px;
-      object-fit: contain;
-      margin: 1rem 0;
-    }
-    .related-title {
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: #8c4f48;
-      margin: 0.5rem 0;
-    }
-    .related {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 10px;
-    }
-    .related img {
-      width: 100%;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .related img:hover {
-      transform: scale(1.05);
-    }
+  /* ---------- CSS VARIABLES (pulled from reference) ---------- */
+  :root{
+    --color-primary:#8d5a4f;
+    --color-primary-light:#fcf9f6;
+    --color-primary-dark:#3a3a3a;
+    --color-secondary-light:#fffaf5;
+    --color-accent:#b26e63;
+    --color-accent-hover:#c58c82;
+    --color-secondary-nav-bg:#FBFBFB;
+    --color-secondary-nav-link:#777;
+    --color-secondary-nav-link-hover:var(--color-primary);
+    --font-heading:'Poppins',sans-serif;
+    --font-body:'Poppins',sans-serif;
+    --font-logo:'Dancing Script',cursive;
+    --box-shadow-medium:0 4px 10px rgba(0,0,0,.08);
+    --primary-nav-height:70px;
+  }
+
+  /* ---------- BASE RESET ---------- */
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Poppins',sans-serif;
+    background:#fdf8f5;
+    color:#333;
+    overflow-x:hidden;
+  }
+  a{text-decoration:none;color:inherit;}
+
+  /* ---------- PRIMARY NAVBAR (from reference) ---------- */
+  header{position:sticky;top:0;z-index:1000;width:100%;background:#fff;box-shadow:var(--box-shadow-medium);}
+  .navbar-primary{
+    background:#fff;
+    display:flex;
+    align-items:center;
+    padding:1rem 40px;
+    height:var(--primary-nav-height);
+    width:100%;
+  }
+  .navbar-content-wrapper{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    width:100%;
+    max-width:1200px;
+    margin:0 auto;
+    gap:20px;
+  }
+  .navbar-primary .logo{
+    font-family:var(--font-logo);
+    font-size:2.5rem;
+    color:var(--color-primary-dark);
+    white-space:nowrap;
+  }
+  /* search bar */
+  .navbar-search{flex-grow:1;display:flex;justify-content:center;max-width:600px;}
+  .navbar-search input{
+    width:100%;padding:0.7rem 1.5rem;border-radius:30px;border:1px solid #ddd;
+    background:var(--color-secondary-light);font-size:1rem;outline:none;
+  }
+  .navbar-search input::placeholder{color:#666;opacity:.8;}
+  .navbar-search input:focus{border-color:var(--color-accent);}
+  /* primary nav links */
+  .navbar-primary .nav-links{display:flex;gap:2.5rem;white-space:nowrap;}
+  .navbar-primary .nav-links a{color:var(--color-primary-dark);font-weight:500;position:relative;}
+  .navbar-primary .nav-links a::after{
+    content:'';position:absolute;left:0;bottom:-5px;height:2px;width:0;
+    background:var(--color-accent);transition:width .25s;
+  }
+  .navbar-primary .nav-links a:hover,
+  .navbar-primary .nav-links a.active{color:var(--color-accent);}
+  .navbar-primary .nav-links a:hover::after,
+  .navbar-primary .nav-links a.active::after{width:100%;}
+
+  /* ---------- SECONDARY CATEGORY NAVBAR (unchanged) ---------- */
+  .subnav{
+    background:#ffffff;
+    box-shadow:0 2px 8px rgba(0,0,0,.04);
+    position:sticky;top:var(--primary-nav-height);
+    z-index:999;
+    padding:0 .8rem;
+    display:flex;justify-content:center;overflow-x:auto;
+  }
+  .subnav ul{list-style:none;display:flex;gap:1.5rem;padding:.6rem 0;flex-wrap:wrap;}
+  .subnav a{
+    color:var(--color-secondary-nav-link);font-weight:600;position:relative;white-space:nowrap;
+  }
+  .subnav a::after{
+    content:'';position:absolute;left:0;bottom:-3px;height:2px;width:0;
+    background:var(--color-accent);transition:width .25s;
+  }
+  .subnav a:hover,
+  .subnav a.active{color:var(--color-accent);}
+  .subnav a:hover::after,
+  .subnav a.active::after{width:100%;}
+
+  /* ---------- PAGE CONTENT ---------- */
+  .page-title{
+    text-align:center;margin:2.5rem 0 1.5rem;
+    font-size:2.8rem;color:#8c4f48;font-family:'Lora',serif;
+  }
+  .gallery{column-count:4;column-gap:1.5rem;max-width:1200px;margin:0 auto 4rem;padding:0 2rem;}
+  @media(max-width:1024px){.gallery{column-count:3;}}
+  @media(max-width:768px){.gallery{column-count:2;}}
+  @media(max-width:480px){.gallery{column-count:1;}}
+  .gallery img{width:100%;margin-bottom:1.5rem;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,.08);object-fit:cover;transition:transform .25s;cursor:pointer;}
+  .gallery img:hover{transform:scale(1.05);}
+
+  /* ---------- POPUP ---------- */
+  .popup{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.8);display:none;z-index:2000;overflow:auto;}
+  .popup-content{background:#fff;margin:2rem auto;border-radius:16px;max-width:1000px;padding:1rem;display:flex;flex-direction:column;position:relative;}
+  .popup-header{display:flex;justify-content:space-between;align-items:center;}
+  .close-btn{font-size:22px;cursor:pointer;color:#333;}
+  .popup-main-img{width:100%;border-radius:10px;max-height:600px;object-fit:contain;margin:1rem 0;}
+  .related-title{font-weight:700;font-size:1.1rem;color:#8c4f48;margin:.5rem 0;}
+  .related{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
+  .related img{width:100%;border-radius:8px;cursor:pointer;transition:.3s;}
+  .related img:hover{transform:scale(1.05);}
   </style>
 </head>
 <body>
-  <header class="navbar">
-    <h1 onclick="location.href='index.html'">Pinspire</h1>
 
-    <nav class="nav-links">
-  <a href="travel.html">Travel</a>
-  <a href="design.html">Design</a>
-  <a href="interior.html">Interior</a>
-  <a href="art.html">Art</a>
-  <a href="nature.html">Nature</a>
-  <a href="food.html">Food</a>
-  <a href="photography.html">Photography</a>
-  <a href="fashion.html">Fashion</a>
-</nav>
+  <!-- ===== HEADER ===== -->
+  <!-- ===== HEADER ===== -->
+<header>
+  <!-- PRIMARY NAV (no search) -->
+  <nav class="navbar-primary">
+    <div class="navbar-content-wrapper">
+      <a href="index.html" class="logo">Pinspire</a>
 
-  </header>
-  <h1 class="page-title">Nature Escapes & Green Inspiration</h1>
+      <div class="nav-links">
+        <a href="home.html" class="active">Home</a>
+        <a href="explore.html">Explore</a>
+        <a href="trending.html">Trending</a>
+        <a href="profile.html">Profile</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- SECONDARY CATEGORY NAV (unchanged) -->
+  <nav class="subnav">
+    <ul>
+      <li><a href="nature.html" class="active">Nature</a></li>
+      <li><a href="travel.html">Travel</a></li>
+      <li><a href="design.html">Design</a></li>
+      <li><a href="interior.html">Interior</a></li>
+      <li><a href="art.html">Art</a></li>
+      <li><a href="food.html">Food</a></li>
+      <li><a href="photography.html">Photography</a></li>
+      <li><a href="fashion.html">Fashion</a></li>
+    </ul>
+  </nav>
+</header>
+
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <h1 class="page-title">Nature Escapes &amp; Green Inspiration</h1>
   <main class="gallery"></main>
+
+  <!-- ===== POPUP VIEWER ===== -->
   <div class="popup" id="popup">
     <div class="popup-content">
       <div class="popup-header">
@@ -155,87 +180,71 @@
       <div class="related" id="related-images"></div>
     </div>
   </div>
+
+  <!-- ===== JAVASCRIPT (gallery logic unchanged) ===== -->
   <script>
-    const accessKey = "OWpI9_o2yssBBmD2ni_2c5jed63jeljd6DBT1w79r18";
-    const gallery = document.querySelector(".gallery");
-    const popup = document.getElementById("popup");
-    const popupImg = document.getElementById("popup-img");
-    const relatedDiv = document.getElementById("related-images");
-    const closePopupBtn = document.getElementById("closePopup");
-    let page = 1;
-    let relatedPage = 1;
-    const perPage = 20;
-    let loading = false;
-    let currentSearchTerm = "nature";
+  const accessKey="OWpI9_o2yssBBmD2ni_2c5jed63jeljd6DBT1w79r18";
+  const gallery=document.querySelector(".gallery");
+  const popup=document.getElementById("popup");
+  const popupImg=document.getElementById("popup-img");
+  const relatedDiv=document.getElementById("related-images");
+  const closePopupBtn=document.getElementById("closePopup");
+  let page=1,relatedPage=1,loading=false;
+  const perPage=20;
+  let currentSearchTerm="nature";
 
-    async function loadImages() {
-      if (loading) return;
-      loading = true;
-      try {
-        const res = await fetch(`https://api.unsplash.com/search/photos?page=${page}&per_page=${perPage}&query=nature&client_id=${accessKey}`);
-        const data = await res.json();
-        data.results.forEach(photo => {
-          const img = document.createElement("img");
-          img.src = photo.urls.small;
-          img.alt = photo.alt_description || "Nature Image";
-          img.loading = "lazy";
-          img.addEventListener("click", () => {
-            popup.style.display = "block";
-            popup.scrollTop = 0;
-            popupImg.src = photo.urls.regular;
-            currentSearchTerm = photo.tags?.[0]?.title || "nature";
-            relatedPage = 1;
-            loadRelatedImages(currentSearchTerm, true);
-          });
-          gallery.appendChild(img);
-        });
-        page++;
-      } catch (error) {
-        console.error("Failed to load images:", error);
-      }
-      loading = false;
-    }
+  async function loadImages(){
+    if(loading)return;loading=true;
+    try{
+      const res=await fetch(`https://api.unsplash.com/search/photos?page=${page}&per_page=${perPage}&query=nature&client_id=${accessKey}`);
+      const data=await res.json();
+      data.results.forEach(photo=>{
+        const img=document.createElement("img");
+        img.src=photo.urls.small;
+        img.alt=photo.alt_description||"Nature Image";
+        img.loading="lazy";
+        img.onclick=()=>{
+          popup.style.display="block";popup.scrollTop=0;
+          popupImg.src=photo.urls.regular;
+          currentSearchTerm=photo.tags?.[0]?.title||"nature";
+          relatedPage=1;loadRelatedImages(currentSearchTerm,true);
+        };
+        gallery.appendChild(img);
+      });
+      page++;
+    }catch(err){console.error(err);}
+    loading=false;
+  }
 
-    async function loadRelatedImages(searchTerm, clear = false) {
-      try {
-        const res = await fetch(`https://api.unsplash.com/search/photos?query=${searchTerm}&page=${relatedPage}&per_page=12&client_id=${accessKey}`);
-        const data = await res.json();
-        if (clear) relatedDiv.innerHTML = "";
-        data.results.forEach(photo => {
-          const relatedImg = document.createElement("img");
-          relatedImg.src = photo.urls.thumb;
-          relatedImg.alt = photo.alt_description;
-          relatedImg.addEventListener("click", () => {
-            popupImg.src = photo.urls.regular;
-            currentSearchTerm = photo.tags?.[0]?.title || searchTerm;
-            relatedPage = 1;
-            loadRelatedImages(currentSearchTerm, true);
-          });
-          relatedDiv.appendChild(relatedImg);
-        });
-        relatedPage++;
-      } catch (e) {
-        console.log("Failed to load related images", e);
-      }
-    }
+  async function loadRelatedImages(term,clear=false){
+    try{
+      const res=await fetch(`https://api.unsplash.com/search/photos?query=${term}&page=${relatedPage}&per_page=12&client_id=${accessKey}`);
+      const data=await res.json();
+      if(clear)relatedDiv.innerHTML="";
+      data.results.forEach(photo=>{
+        const rImg=document.createElement("img");
+        rImg.src=photo.urls.thumb;
+        rImg.alt=photo.alt_description;
+        rImg.onclick=()=>{
+          popupImg.src=photo.urls.regular;
+          currentSearchTerm=photo.tags?.[0]?.title||term;
+          relatedPage=1;loadRelatedImages(currentSearchTerm,true);
+        };
+        relatedDiv.appendChild(rImg);
+      });
+      relatedPage++;
+    }catch(e){console.log(e);}
+  }
 
-    window.addEventListener("scroll", () => {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000) {
-        loadImages();
-      }
-    });
+  window.addEventListener("scroll",()=>{
+    if(window.innerHeight+window.scrollY>=document.body.offsetHeight-1000)loadImages();
+  });
+  popup.addEventListener("scroll",()=>{
+    if(popup.scrollTop+popup.clientHeight>=popup.scrollHeight-200)loadRelatedImages(currentSearchTerm);
+  });
+  closePopupBtn.onclick=()=>popup.style.display="none";
 
-    popup.addEventListener("scroll", () => {
-      if (popup.scrollTop + popup.clientHeight >= popup.scrollHeight - 200) {
-        loadRelatedImages(currentSearchTerm);
-      }
-    });
-
-    closePopupBtn.addEventListener("click", () => {
-      popup.style.display = "none";
-    });
-
-    loadImages();
+  loadImages();
   </script>
 </body>
 </html>
