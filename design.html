@@ -4,41 +4,150 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Design | Pinspire</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Raleway:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+
   <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    body{
-      font-family: 'Raleway', sans-serif;
-      background:#fdf8f5;
-      color:#333;
+    :root {
+      --color-primary: #8d5a4f;
+      --color-accent: #b26e63;
+      --color-accent-hover: #d87093;
+      --color-secondary-nav-link: #777;
+      --font-logo: 'Dancing Script', cursive;
+      --box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+      --nav-height: 70px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #fdf8f5;
+      color: #333;
       overflow-x: hidden;
     }
-    .navbar{
-      background:white;
-      box-shadow:0 2px 8px rgba(0,0,0,.08);
-      position:sticky;top:0;z-index:999;
-      padding:0 1.5rem;
-      display:flex;align-items:center;gap:2rem;
+
+    a {
+      text-decoration: none;
+      color: inherit;
     }
-    .navbar h1{
-      font-size:1.4rem;
-      color:#b26e63;
-      padding:.8rem 0;
-      font-family: 'Playfair Display', serif;
+
+    /* Primary Navbar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #fff;
+      box-shadow: var(--box-shadow);
     }
-    .nav-links{
-      margin-left:auto;
-      display:flex;gap:1.2rem;
+
+    .navbar-primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: var(--nav-height);
+      padding: 0 40px;
     }
-    .nav-links a{
-      text-decoration:none;color:#555;font-weight:600;position:relative;
+
+    .navbar-content-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1200px;
     }
-    .nav-links a::after{
-      content:"";position:absolute;left:0;bottom:-3px;height:2px;width:0;
-      background:#b26e63;transition:width .25s ease;
+
+    .logo {
+      font-family: var(--font-logo);
+      font-size: 2.5rem;
+      color: #3a3a3a;
+      white-space: nowrap;
     }
-    .nav-links a:hover::after{width:100%;}
-    .nav-links a:hover{color:#d87093;}
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      position: relative;
+      color: #3a3a3a;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      height: 2px;
+      width: 0;
+      background: var(--color-accent);
+      transition: width .25s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--color-accent);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    /* Secondary Navbar */
+    .subnav {
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+      position: sticky;
+      top: var(--nav-height);
+      z-index: 999;
+      overflow-x: auto;
+    }
+
+    .subnav ul {
+      display: flex;
+      gap: 1.5rem;
+      padding: .6rem .8rem;
+      list-style: none;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .subnav a {
+      font-weight: 600;
+      color: var(--color-secondary-nav-link);
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .subnav a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      height: 2px;
+      width: 0;
+      background: var(--color-accent);
+      transition: width .25s;
+    }
+
+    .subnav a:hover,
+    .subnav a.active {
+      color: var(--color-accent);
+    }
+
+    .subnav a:hover::after,
+    .subnav a.active::after {
+      width: 100%;
+    }
+
     .page-title {
       text-align: center;
       margin: 2.5rem 0 1.5rem;
@@ -46,6 +155,7 @@
       color: #8c4f48;
       font-family: 'Playfair Display', serif;
     }
+
     .gallery {
       column-count: 4;
       column-gap: 1.5rem;
@@ -53,23 +163,30 @@
       margin: 0 auto 4rem;
       padding: 0 2rem;
     }
+
     @media (max-width: 1024px) {.gallery { column-count: 3; }}
     @media (max-width: 768px) {.gallery { column-count: 2; }}
     @media (max-width: 480px) {.gallery { column-count: 1; }}
-    .gallery img{
-      width:100%;
+
+    .gallery img {
+      width: 100%;
       margin-bottom: 1.5rem;
-      height:auto;
-      object-fit:cover;
-      border-radius:10px;
-      box-shadow:0 4px 12px rgba(0,0,0,.08);
-      transition:transform .25s ease;
+      height: auto;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+      transition: transform .25s ease;
       cursor: pointer;
     }
-    .gallery img:hover{transform:scale(1.05);}
+
+    .gallery img:hover {
+      transform: scale(1.05);
+    }
+
     .popup {
       position: fixed;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       width: 100vw;
       height: 100vh;
       background: rgba(0, 0, 0, 0.8);
@@ -77,6 +194,7 @@
       z-index: 2000;
       overflow: auto;
     }
+
     .popup-content {
       background: #fff;
       margin: 2rem auto;
@@ -85,18 +203,20 @@
       padding: 1rem;
       display: flex;
       flex-direction: column;
-      position: relative;
     }
+
     .popup-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .popup-header .close-btn {
+
+    .close-btn {
       font-size: 22px;
       cursor: pointer;
       color: #333;
     }
+
     .popup-main-img {
       width: 100%;
       border-radius: 10px;
@@ -104,45 +224,66 @@
       object-fit: contain;
       margin: 1rem 0;
     }
+
     .related-title {
       font-weight: 700;
       font-size: 1.1rem;
       color: #8c4f48;
       margin: 0.5rem 0;
     }
+
     .related {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
       gap: 10px;
     }
+
     .related img {
       width: 100%;
       border-radius: 8px;
       cursor: pointer;
       transition: 0.3s;
     }
+
     .related img:hover {
       transform: scale(1.05);
     }
   </style>
 </head>
 <body>
-  <header class="navbar">
-    <h1 onclick="location.href='index.html'">Pinspire</h1>
 
-   <nav class="nav-links">
-  <a href="travel.html">Travel</a>
-  <a href="design.html">Design</a>
-  <a href="interior.html">Interior</a>
-  <a href="art.html">Art</a>
-  <a href="nature.html">Nature</a>
-  <a href="food.html">Food</a>
-  <a href="photography.html">Photography</a>
-  <a href="fashion.html">Fashion</a>
-</nav>
+  <!-- Primary Nav -->
+  <header>
+    <nav class="navbar-primary">
+      <div class="navbar-content-wrapper">
+        <a href="index.html" class="logo">Pinspire</a>
+        <div class="nav-links">
+          <a href="home.html">Home</a>
+          <a href="explore.html">Explore</a>
+          <a href="trending.html">Trending</a>
+          <a href="profile.html">Profile</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Secondary Nav -->
+    <nav class="subnav">
+      <ul>
+        <li><a href="nature.html">Nature</a></li>
+        <li><a href="travel.html">Travel</a></li>
+        <li><a href="design.html" class="active">Design</a></li>
+        <li><a href="interior.html">Interior</a></li>
+        <li><a href="art.html">Art</a></li>
+        <li><a href="food.html">Food</a></li>
+        <li><a href="photography.html">Photography</a></li>
+        <li><a href="fashion.html">Fashion</a></li>
+      </ul>
+    </nav>
   </header>
+
   <h1 class="page-title">Modern Design Inspiration</h1>
   <main class="gallery"></main>
+
   <div class="popup" id="popup">
     <div class="popup-content">
       <div class="popup-header">
@@ -154,6 +295,7 @@
       <div class="related" id="related-images"></div>
     </div>
   </div>
+
   <script>
     const accessKey = "OWpI9_o2yssBBmD2ni_2c5jed63jeljd6DBT1w79r18";
     const gallery = document.querySelector(".gallery");
@@ -161,6 +303,7 @@
     const popupImg = document.getElementById("popup-img");
     const relatedDiv = document.getElementById("related-images");
     const closePopupBtn = document.getElementById("closePopup");
+
     let page = 1;
     let relatedPage = 1;
     const perPage = 20;
