@@ -2,7 +2,6 @@
 
 **Pinspire** is a visually captivating, Pinterest-inspired web application that allows users to explore trending content, express their interests, and manage personalized profiles — all within a sleek and responsive UI.
 
-![Pinspire Banner](https://your-image-link.com/banner.png) <!-- Optional: Add a banner or screenshot -->
 
 ---
 
