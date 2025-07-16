@@ -1,256 +1,308 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Login - Pinspire</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
-    <style>
-        /* --- Global Variables (for consistent branding) --- */
-        :root {
-            --color-primary-light: #fcf9f6; /* Very light, warm off-white/beige */
-            --color-primary-dark: #3a3a3a; /* Dark charcoal for text */
-            --color-accent: #b26e63; /* Muted Terracotta/Rose - Main accent */
-            --color-accent-hover: #8a4f44; /* Darker accent for hover states */
-            --color-text-muted: #666; /* Softer text color */
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Pinspire</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-primary-light: #fcf9f6;
+      --color-primary-dark: #3a3a3a;
+      --color-accent: #b26e63;
+      --color-accent-hover: #8a4f44;
+      --color-text-muted: #666;
+      --font-body: 'Poppins', sans-serif;
+      --font-logo: 'Dancing Script', cursive;
+      --box-shadow-light: 0 4px 10px rgba(0, 0, 0, 0.05);
+      --box-shadow-medium: 0 8px 20px rgba(0, 0, 0, 0.15);
+      --color-accent-rgb: 178, 110, 99;
+    }
 
-            --font-body: 'Poppins', sans-serif;
-            --font-logo: 'Dancing Script', cursive;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-            --box-shadow-light: 0 4px 10px rgba(0, 0, 0, 0.05);
-            --box-shadow-medium: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
+    body {
+      font-family: var(--font-body);
+      background: url("covernew.png") no-repeat center center/cover;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
 
-        /* --- Base Styles --- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(255, 255, 255, 0.98);
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: var(--box-shadow-medium);
+      backdrop-filter: blur(5px);
+      animation: fadeIn 0.8s ease-out;
+    }
 
-        body {
-            font-family: var(--font-body);
-            background: url("covernew.png") no-repeat center center/cover;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px; /* Add padding for smaller screens */
-        }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        /* --- Login Form Container --- */
-        .login-container {
-            width: 100%;
-            max-width: 420px; /* Slightly increased max-width */
-            background: rgba(255, 255, 255, 0.98); /* Slightly less transparent */
-            padding: 2.5rem; /* More padding */
-            border-radius: 20px; /* Larger border-radius */
-            box-shadow: var(--box-shadow-medium); /* More prominent shadow */
-            backdrop-filter: blur(5px); /* Subtle blur effect on background */
-            animation: fadeIn 0.8s ease-out; /* Fade-in animation */
-        }
+    h2 {
+      text-align: center;
+      color: var(--color-accent);
+      margin-bottom: 2rem;
+      font-weight: 700;
+      font-size: 2em;
+      letter-spacing: 0.5px;
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
 
-        /* --- Heading --- */
-        h2 {
-            text-align: center;
-            color: var(--color-accent);
-            margin-bottom: 2rem; /* More spacing below heading */
-            font-weight: 700; /* Bolder heading */
-            font-size: 2em; /* Larger font size for heading */
-            letter-spacing: 0.5px;
-        }
+    input {
+      display: block;
+      padding: 0.9rem 1.2rem;
+      width: 100%;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1.05rem;
+      background-color: #fcfcfc;
+      color: var(--color-primary-dark);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
 
-        /* --- Input Fields --- */
-        .input-group {
-            margin-bottom: 1.5rem; /* Spacing between input groups */
-        }
+    input::placeholder {
+      color: var(--color-text-muted);
+      opacity: 0.7;
+    }
 
-        input {
-            display: block;
-            padding: 0.9rem 1.2rem; /* Increased padding */
-            width: 100%;
-            border: 1px solid #e0e0e0; /* Lighter border color */
-            border-radius: 10px; /* More rounded inputs */
-            font-size: 1.05rem; /* Slightly larger font size */
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            background-color: #fcfcfc; /* Slightly off-white input background */
-            color: var(--color-primary-dark);
-        }
+    input:focus {
+      outline: none;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 8px rgba(var(--color-accent-rgb), 0.3);
+    }
 
-        input::placeholder {
-            color: var(--color-text-muted);
-            opacity: 0.7; /* Make placeholder a bit lighter */
-        }
+    button {
+      width: 100%;
+      padding: 1rem;
+      background: var(--color-accent);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      letter-spacing: 0.5px;
+      margin-top: 1rem;
+    }
 
-        input:focus {
-            outline: none;
-            border-color: var(--color-accent);
-            box-shadow: 0 0 8px rgba(var(--color-accent-rgb), 0.3); /* Softer shadow for focus */
-        }
+    button:hover {
+      background: var(--color-accent-hover);
+      transform: translateY(-2px);
+    }
 
-        /* --- Button --- */
-        button {
-            width: 100%;
-            padding: 1rem; /* More padding for a bolder button */
-            background: var(--color-accent);
-            color: white;
-            border: none;
-            border-radius: 10px; /* Consistent border-radius with inputs */
-            font-size: 1.1rem; /* Larger font size */
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease;
-            letter-spacing: 0.5px;
-            margin-top: 1rem; /* Space above the button */
-        }
+    button:active {
+      transform: translateY(0);
+    }
 
-        button:hover {
-            background: var(--color-accent-hover);
-            transform: translateY(-2px); /* Subtle lift on hover */
-        }
+    .google-btn {
+      margin-top: 1rem;
+      background-color: #fff;
+      color: #444;
+      border: 1px solid #ccc;
+      padding: 0.9rem 1rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: box-shadow 0.3s ease, transform 0.2s ease;
+      width: 100%;
+    }
 
-        button:active {
-            transform: translateY(0); /* Press effect */
-        }
+    .google-btn:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transform: translateY(-1px);
+    }
 
-        /* --- Message & Links --- */
-        #message {
-            text-align: center;
-            margin-top: 1.5rem; /* More spacing */
-            font-weight: 600; /* Bolder message */
-            font-size: 0.95rem;
-            min-height: 20px; /* Prevent layout shift if message appears/disappears */
-        }
+    .google-btn:active {
+      transform: scale(0.98);
+    }
 
-        p {
-            text-align: center;
-            margin-top: 1.5rem; /* More spacing */
-            color: var(--color-text-muted);
-            font-size: 0.95rem;
-        }
+    #message {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      min-height: 20px;
+    }
 
-        a {
-            color: var(--color-accent);
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s ease, text-decoration 0.3s ease;
-        }
+    p {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: var(--color-text-muted);
+      font-size: 0.95rem;
+    }
 
-        a:hover {
-            color: var(--color-accent-hover);
-            text-decoration: underline;
-        }
+    a {
+      color: var(--color-accent);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease, text-decoration 0.3s ease;
+    }
 
-        /* --- For consistent accent color in rgba (needed for box-shadow with opacity) --- */
-        :root {
-            --color-accent-rgb: 178, 110, 99; /* RGB values for #b26e63 */
-        }
+    a:hover {
+      color: var(--color-accent-hover);
+      text-decoration: underline;
+    }
 
-        /* --- Media Queries for Responsiveness --- */
-        @media (max-width: 480px) {
-            .login-container {
-                padding: 1.8rem;
-                border-radius: 15px;
-            }
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 1.8rem;
+        border-radius: 15px;
+      }
 
-            h2 {
-                font-size: 1.8em;
-                margin-bottom: 1.8rem;
-            }
+      h2 {
+        font-size: 1.8em;
+        margin-bottom: 1.8rem;
+      }
 
-            input {
-                padding: 0.8rem 1rem;
-                font-size: 1rem;
-            }
+      input {
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
+      }
 
-            button {
-                padding: 0.9rem;
-                font-size: 1rem;
-            }
+      button {
+        padding: 0.9rem;
+        font-size: 1rem;
+      }
 
-            #message, p {
-                font-size: 0.9rem;
-            }
-        }
-    </style>
+      #message, p {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="login-container">
-        <form id="login-form">
-            <h2>Welcome Back!</h2> <div class="input-group">
-                <input type="email" id="email" placeholder="Email Address" required />
-            </div>
-            <div class="input-group">
-                <input type="password" id="password" placeholder="Password" required />
-            </div>
-            <button type="submit">Login to Pinspire</button>
-            <p id="message"></p>
-            <p>Don't have an account? <a href="register.html">Register here</a></p>
-        </form>
-    </div>
+  <div class="login-container">
+    <form id="login-form">
+      <h2>Welcome Back!</h2>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+      <div class="input-group">
+        <input type="email" id="email" placeholder="Email Address" required />
+      </div>
+      <div class="input-group">
+        <input type="password" id="password" placeholder="Password" required />
+      </div>
 
-        // IMPORTANT: Make sure firebaseConfig.js is in the same directory or adjust the path
-        import { firebaseConfig } from "./firebaseconfig.js";
-        
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+      <button type="submit">Login to Pinspire</button>
 
-        const form = document.getElementById("login-form");
-        const msg = document.getElementById("message");
+      <!-- Divider -->
+      <div style="margin: 1.5rem 0; display: flex; align-items: center; text-align: center;">
+        <hr style="flex: 1; border: none; border-top: 1px solid #ddd;">
+        <span style="margin: 0 12px; color: var(--color-text-muted); font-weight: 500;">or</span>
+        <hr style="flex: 1; border: none; border-top: 1px solid #ddd;">
+      </div>
 
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const email = document.getElementById("email").value.trim();
-            const password = document.getElementById("password").value.trim();
+      <!-- Google Sign-In -->
+      <button type="button" id="google-login" class="google-btn">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="20" height="20" />
+        <span style="flex: 1; text-align: center;">Continue with Google</span>
+      </button>
 
-            if (!email || !password) {
-                msg.textContent = "Please enter both email and password.";
-                msg.style.color = "red";
-                return;
-            }
+      <p id="message"></p>
+      <p>Don't have an account? <a href="register.html">Register here</a></p>
+    </form>
+  </div>
 
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                msg.textContent = "✅ Login successful! Redirecting...";
-                msg.style.color = "green";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      signInWithPopup,
+      GoogleAuthProvider
+    } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
-                setTimeout(() => {
-                    window.location.href = "profile.html"; // Redirect to profile page
-                }, 1500); // Increased delay for better user experience
-            } catch (err) {
-                // Friendly error messages for common Firebase errors
-                let errorMessage = "An error occurred. Please try again.";
-                switch (err.code) {
-                    case 'auth/invalid-email':
-                        errorMessage = "Invalid email address format.";
-                        break;
-                    case 'auth/user-disabled':
-                        errorMessage = "Your account has been disabled.";
-                        break;
-                    case 'auth/user-not-found':
-                    case 'auth/wrong-password':
-                        errorMessage = "Invalid email or password.";
-                        break;
-                    case 'auth/too-many-requests':
-                        errorMessage = "Too many login attempts. Please try again later.";
-                        break;
-                    default:
-                        errorMessage = err.message; // Fallback to raw message for unhandled errors
-                }
-                msg.textContent = "❌ " + errorMessage;
-                msg.style.color = "red";
-            }
-        });
-    </script>
+    import { firebaseConfig } from "./firebaseconfig.js";
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    const form = document.getElementById("login-form");
+    const msg = document.getElementById("message");
+    const googleBtn = document.getElementById("google-login");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!email || !password) {
+        msg.textContent = "Please enter both email and password.";
+        msg.style.color = "red";
+        return;
+      }
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        msg.textContent = "✅ Login successful! Redirecting...";
+        msg.style.color = "green";
+        setTimeout(() => window.location.href = "profile.html", 1500);
+      } catch (err) {
+        let errorMessage = "An error occurred. Please try again.";
+        switch (err.code) {
+          case 'auth/invalid-email':
+            errorMessage = "Invalid email address format.";
+            break;
+          case 'auth/user-disabled':
+            errorMessage = "Your account has been disabled.";
+            break;
+          case 'auth/user-not-found':
+          case 'auth/wrong-password':
+            errorMessage = "Invalid email or password.";
+            break;
+          case 'auth/too-many-requests':
+            errorMessage = "Too many login attempts. Please try again later.";
+            break;
+          default:
+            errorMessage = err.message;
+        }
+        msg.textContent = "❌ " + errorMessage;
+        msg.style.color = "red";
+      }
+    });
+
+    googleBtn.addEventListener("click", async () => {
+      try {
+        await signInWithPopup(auth, provider);
+        msg.textContent = "✅ Google login successful! Redirecting...";
+        msg.style.color = "green";
+        setTimeout(() => window.location.href = "profile.html", 1500);
+      } catch (err) {
+        let errorMessage = "Google sign-in failed. Please try again.";
+        if (err.code === "auth/popup-closed-by-user") {
+          errorMessage = "Popup closed before completing sign-in.";
+        } else if (err.code === "auth/cancelled-popup-request") {
+          errorMessage = "Only one popup request is allowed at a time.";
+        } else {
+          errorMessage = err.message;
+        }
+        msg.textContent = "❌ " + errorMessage;
+        msg.style.color = "red";
+      }
+    });
+  </script>
 </body>
 </html>
