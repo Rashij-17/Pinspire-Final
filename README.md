@@ -1,33 +1,36 @@
-# Pinspire
-
 # 📌 Pinspire
 
-**Pinspire** is a visually aesthetic, Pinterest-like web application where users can explore trending content, express their interests, and manage a personalized profile.
+**Pinspire** is a visually captivating, Pinterest-inspired web application that allows users to explore trending content, express their interests, and manage personalized profiles — all within a sleek and responsive UI.
+
+![Pinspire Banner](https://your-image-link.com/banner.png) <!-- Optional: Add a banner or screenshot -->
+
+---
 
 ## 🌐 Live Demo
 
-[Visit Pinspire Website :-(pinspire-getinspired.netlify.app)]
+🔗 [Visit Pinspire Live](https://pinspire-getinspired.netlify.app)
 
+---
+
+## ✨ Features
+
+- 🖼️ Aesthetic and responsive **Home**, **Explore**, and **Trending** pages  
+- 👤 Simple **login system** using name and email (Firebase-auth synced)  
+- 🧠 Personalized **profile page** to view and manage interests  
+- 🗃️ **Admin panel** with user list and CSV export functionality  
+- 🔄 **Firebase Realtime Database** integration for live updates  
+- 📱 Fully **responsive design** — works seamlessly on all devices
 
 ---
 
-## 🛠 Features
+## 🧰 Tech Stack
 
-- 🖼️ Aesthetic Home, Explore, and Trending Pages  
-- 👤 Login system (name + email)  
-- 🧠 Profile Page: View and edit interests  
-- 🗃️ Admin Panel: View all users and export data as CSV  
-- 🔄 Firebase integration for realtime data syncing  
-- ✅ Responsive design
-
----
----
-
-## 🧩 Tech Stack
-
-- **Frontend**: HTML5, CSS3, JavaScript  
-- **Backend**: Firebase Realtime Database  
-- **Authentication**: Custom Form + Firebase Sync  
-- **Hosting**: GitHub Pages / Firebase Hosting 
+| Layer         | Tools/Technologies             |
+|---------------|-------------------------------|
+| **Frontend**  | HTML5, CSS3, JavaScript        |
+| **Backend**   | Firebase Realtime Database     |
+| **Auth**      | Firebase Authentication        |
+| **Hosting**   | Netlify (Live), Firebase Hosting (Alternative) |
 
 ---
+
