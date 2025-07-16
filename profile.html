@@ -527,11 +527,10 @@
         </div>
     </div>
 
-   <!-- Replace this section in your existing <script type="module"> -->
-<script type="module">
+ <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, collection, getDocs, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, collection, getDocs, updateDoc, setDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
     import { firebaseConfig } from "./firebaseconfig.js";
 
     const app = initializeApp(firebaseConfig);
@@ -549,159 +548,167 @@
     let currentUserInterests = [];
 
     logoutBtn.addEventListener("click", () => {
-        signOut(auth).then(() => {
-            window.location.href = "login.html";
-        }).catch(error => {
-            console.error("Error signing out:", error);
-            alert("Error signing out. Please try again.");
-        });
+      signOut(auth).then(() => {
+        window.location.href = "login.html";
+      }).catch(error => {
+        console.error("Error signing out:", error);
+        alert("Error signing out. Please try again.");
+      });
     });
 
     onAuthStateChanged(auth, async (user) => {
-        if (!user) {
-            window.location.href = "login.html";
-            return;
+      if (!user) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      try {
+        const userRef = doc(db, "users", user.uid);
+        let userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+          // Create the user document if it doesn't exist
+          const newUserData = {
+            name: user.displayName || "",
+            email: user.email || "",
+            isAdmin: false,
+            interests: []
+          };
+          await setDoc(userRef, newUserData);
+          userSnap = await getDoc(userRef); // re-fetch after creation
+          console.warn("Created missing Firestore user document for UID:", user.uid);
         }
 
-        try {
-            const userRef = doc(db, "users", user.uid);
-            const userSnap = await getDoc(userRef);
+        const data = userSnap.data();
+        usernameEl.textContent = data.name || user.displayName || user.email || "Unknown User";
+        currentUserInterests = data.interests || [];
+        renderInterests();
 
-            if (userSnap.exists()) {
-                const data = userSnap.data();
-                usernameEl.textContent = data.name || user.displayName || user.email || "Unknown User";
-                currentUserInterests = data.interests || [];
-                renderInterests();
-
-                if (data.isAdmin) {
-                    adminPanel.style.display = "block";
-                    viewUsersBtn.addEventListener("click", async () => {
-                        userList.innerHTML = "Loading users...";
-                        try {
-                            const snapshot = await getDocs(collection(db, "users"));
-                            if (snapshot.empty) {
-                                userList.innerHTML = "No users found.";
-                                return;
-                            }
-                            userList.innerHTML = "";
-                            snapshot.forEach(doc => {
-                                const u = doc.data();
-                                const div = document.createElement("div");
-                                div.innerHTML = `<b>${u.name || 'N/A'}</b> - ${u.email || 'N/A'}`;
-                                userList.appendChild(div);
-                            });
-                        } catch (error) {
-                            console.error("Error fetching users for admin panel:", error);
-                            userList.innerHTML = "Error loading users.";
-                        }
-                    });
-                }
-            } else {
-                // Fallback to Firebase Auth data if Firestore doc doesn't exist
-                usernameEl.textContent = user.displayName || user.email || "Unknown User";
-                console.warn("User document not found in Firestore for UID:", user.uid);
+        if (data.isAdmin) {
+          adminPanel.style.display = "block";
+          viewUsersBtn.addEventListener("click", async () => {
+            userList.innerHTML = "Loading users...";
+            try {
+              const snapshot = await getDocs(collection(db, "users"));
+              if (snapshot.empty) {
+                userList.innerHTML = "No users found.";
+                return;
+              }
+              userList.innerHTML = "";
+              snapshot.forEach(doc => {
+                const u = doc.data();
+                const div = document.createElement("div");
+                div.innerHTML = `<b>${u.name || 'N/A'}</b> - ${u.email || 'N/A'}`;
+                userList.appendChild(div);
+              });
+            } catch (error) {
+              console.error("Error fetching users for admin panel:", error);
+              userList.innerHTML = "Error loading users.";
             }
-        } catch (err) {
-            console.error("Error loading user data:", err);
-            usernameEl.textContent = "Error loading data";
+          });
         }
+      } catch (err) {
+        console.error("Error loading user data:", err);
+        usernameEl.textContent = "Error loading data";
+      }
     });
 
     window.downloadCSV = async function () {
-        try {
-            const usersSnapshot = await getDocs(collection(db, "users"));
-            const rows = [["Name", "Email", "isAdmin", "Interests"]];
+      try {
+        const usersSnapshot = await getDocs(collection(db, "users"));
+        const rows = [["Name", "Email", "isAdmin", "Interests"]];
 
-            usersSnapshot.forEach((doc) => {
-                const data = doc.data();
-                rows.push([
-                    data.name || "N/A",
-                    data.email || "N/A",
-                    data.isAdmin ? "true" : "false",
-                    (data.interests || []).join('; ')
-                ]);
-            });
+        usersSnapshot.forEach((doc) => {
+          const data = doc.data();
+          rows.push([
+            data.name || "N/A",
+            data.email || "N/A",
+            data.isAdmin ? "true" : "false",
+            (data.interests || []).join('; ')
+          ]);
+        });
 
-            const csvContent = rows.map(e => e.join(",")).join("\n");
-            const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.setAttribute("href", url);
-            link.setAttribute("download", "pinspire_users.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        } catch (err) {
-            alert("Error downloading CSV: " + err.message);
-            console.error("CSV Download Error:", err);
-        }
+        const csvContent = rows.map(e => e.join(",")).join("\n");
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", "pinspire_users.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (err) {
+        alert("Error downloading CSV: " + err.message);
+        console.error("CSV Download Error:", err);
+      }
     }
 
     async function renderInterests() {
-        interestListContainer.innerHTML = '';
-        if (currentUserInterests.length === 0) {
-            const noInterestsMsg = document.createElement('p');
-            noInterestsMsg.className = 'no-interests-message';
-            noInterestsMsg.textContent = "You haven't added any interests yet. Start personalizing your feed!";
-            interestListContainer.appendChild(noInterestsMsg);
-            return;
-        }
+      interestListContainer.innerHTML = '';
+      if (currentUserInterests.length === 0) {
+        const noInterestsMsg = document.createElement('p');
+        noInterestsMsg.className = 'no-interests-message';
+        noInterestsMsg.textContent = "You haven't added any interests yet. Start personalizing your feed!";
+        interestListContainer.appendChild(noInterestsMsg);
+        return;
+      }
 
-        currentUserInterests.forEach((item) => {
-            const tag = document.createElement('div');
-            tag.className = 'interest-tag';
-            tag.innerHTML = `<span>${item}</span> <button data-interest="${item}"><i class="fas fa-times"></i></button>`;
-            tag.querySelector('button').addEventListener('click', () => removeInterest(item));
-            interestListContainer.appendChild(tag);
-        });
+      currentUserInterests.forEach((item) => {
+        const tag = document.createElement('div');
+        tag.className = 'interest-tag';
+        tag.innerHTML = `<span>${item}</span> <button data-interest="${item}"><i class="fas fa-times"></i></button>`;
+        tag.querySelector('button').addEventListener('click', () => removeInterest(item));
+        interestListContainer.appendChild(tag);
+      });
     }
 
     window.addInterest = async function () {
-        const newInterest = interestInput.value.trim();
-        if (!newInterest) {
-            alert("Please enter an interest.");
-            return;
-        }
-        if (currentUserInterests.includes(newInterest)) {
-            alert("This interest is already added.");
-            return;
-        }
+      const newInterest = interestInput.value.trim();
+      if (!newInterest) {
+        alert("Please enter an interest.");
+        return;
+      }
+      if (currentUserInterests.includes(newInterest)) {
+        alert("This interest is already added.");
+        return;
+      }
 
-        if (auth.currentUser) {
-            const userRef = doc(db, "users", auth.currentUser.uid);
-            try {
-                await updateDoc(userRef, {
-                    interests: arrayUnion(newInterest)
-                });
-                currentUserInterests.push(newInterest);
-                interestInput.value = '';
-                renderInterests();
-            } catch (error) {
-                console.error("Error adding interest:", error);
-                alert("Failed to add interest. Please try again.");
-            }
-        } else {
-            alert("You must be logged in to add interests.");
+      if (auth.currentUser) {
+        const userRef = doc(db, "users", auth.currentUser.uid);
+        try {
+          await updateDoc(userRef, {
+            interests: arrayUnion(newInterest)
+          });
+          currentUserInterests.push(newInterest);
+          interestInput.value = '';
+          renderInterests();
+        } catch (error) {
+          console.error("Error adding interest:", error);
+          alert("Failed to add interest. Please try again.");
         }
+      } else {
+        alert("You must be logged in to add interests.");
+      }
     }
 
     window.removeInterest = async function (interestToRemove) {
-        if (auth.currentUser) {
-            const userRef = doc(db, "users", auth.currentUser.uid);
-            try {
-                await updateDoc(userRef, {
-                    interests: arrayRemove(interestToRemove)
-                });
-                currentUserInterests = currentUserInterests.filter(item => item !== interestToRemove);
-                renderInterests();
-            } catch (error) {
-                console.error("Error removing interest:", error);
-                alert("Failed to remove interest. Please try again.");
-            }
-        } else {
-            alert("You must be logged in to remove interests.");
+      if (auth.currentUser) {
+        const userRef = doc(db, "users", auth.currentUser.uid);
+        try {
+          await updateDoc(userRef, {
+            interests: arrayRemove(interestToRemove)
+          });
+          currentUserInterests = currentUserInterests.filter(item => item !== interestToRemove);
+          renderInterests();
+        } catch (error) {
+          console.error("Error removing interest:", error);
+          alert("Failed to remove interest. Please try again.");
         }
+      } else {
+        alert("You must be logged in to remove interests.");
+      }
     }
-</script>
+  </script>
 </body>
+
 </html>
