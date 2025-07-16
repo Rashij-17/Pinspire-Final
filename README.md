@@ -6,7 +6,9 @@
 
 ## 🌐 Live Demo
 
-[Visit Pinspire Website :-pinspire-getinspired.netlify.app
+[Visit Pinspire Website :-(pinspire-getinspired.netlify.app)]
+
+
 ---
 
 ## 🛠 Features
