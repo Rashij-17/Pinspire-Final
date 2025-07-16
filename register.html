@@ -7,6 +7,7 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&family=Poppins&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 
   <style>
     * {
@@ -17,80 +18,129 @@
       margin: 0;
       padding: 0;
       font-family: 'Poppins', sans-serif;
-      background: #f8f8f8;
+      background: #fefdfc; /* Clean background color */
     }
 
-    /* 🔥 Navbar */
-    nav {
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      width: 100%;
       background: white;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .navbar-primary {
+      background: white;
+      display: flex;
+      align-items: center;
+      padding: 1rem 40px;
+      height: 70px;
+      width: 100%;
+    }
+
+    .navbar-content-wrapper {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 2rem;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
-    .nav-title {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: 1.8rem;
-      color: #b26e63;
+    .logo {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.5rem;
+      color: #3a3a3a;
+      text-decoration: none;
+      white-space: nowrap;
     }
 
     .nav-links {
       display: flex;
-      gap: 2rem;
+      gap: 2.5rem;
+      white-space: nowrap;
     }
 
     .nav-links a {
       text-decoration: none;
-      color: black;
-      font-size: 1rem;
+      color: #3a3a3a;
+      font-size: 1.05rem;
       font-weight: 500;
       transition: color 0.3s ease;
+      position: relative;
     }
 
-    .nav-links a:hover {
-      color: #b26e63;
+    a:hover {
+      color:#b26e63;
+  text-decoration: underline;
+}
+
+/* Prevent double underline on navbar links */
+.nav-links a:hover {
+  text-decoration: none;
+}
+
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      height: 2px;
+      background-color: #b26e63;
+      width: 0;
+      left: 0;
+      bottom: -3px;
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
     }
 
     h2 {
       text-align: center;
       margin-top: 2rem;
       color: #b26e63;
+      font-size: 2.2rem;
     }
 
     form {
-      max-width: 400px;
+      max-width: 420px;
       margin: 2rem auto;
       background: #fff;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
+      padding: 2.5rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
     }
 
     input {
       display: block;
       margin: 1rem 0;
-      padding: 0.7rem;
+      padding: 0.9rem;
       width: 100%;
       border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 8px;
       font-size: 1rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #b26e63;
+      box-shadow: 0 0 5px rgba(178, 110, 99, 0.3);
+      outline: none;
     }
 
     button {
-      padding: 0.7rem 1.2rem;
+      padding: 0.8rem 1.2rem;
       background: #b26e63;
       color: white;
       border: none;
-      border-radius: 5px;
-      font-size: 1rem;
+      border-radius: 8px;
+      font-size: 1.05rem;
       cursor: pointer;
       width: 100%;
+      transition: background-color 0.3s ease;
     }
 
     button:hover {
@@ -120,16 +170,19 @@
 </head>
 <body>
 
-  <!-- ✅ NavBar -->
-  <nav>
-    <div class="nav-title">Pinspire</div>
-    <div class="nav-links">
-      <a href="home.html">Home</a>
-      <a href="explore.html">Explore</a>
-      <a href="trending.html">Trending</a>
-      <a href="profile.html">Profile</a>
-    </div>
-  </nav>
+  <header>
+    <nav class="navbar-primary">
+      <div class="navbar-content-wrapper">
+        <a href="index.html" class="logo">Pinspire</a>
+        <div class="nav-links">
+          <a href="home.html">Home</a>
+          <a href="explore.html">Explore</a>
+          <a href="trending.html">Trending</a>
+          <a href="profile.html">Profile</a>
+        </div>
+      </div>
+    </nav>
+  </header>
 
   <h2>Register</h2>
 
